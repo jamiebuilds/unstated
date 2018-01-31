@@ -1,0 +1,41 @@
+{
+  "name": "unstated",
+  "version": "0.0.0",
+  "description": "State ain't shit",
+  "main": "lib/index.js",
+  "repository": "https://github.com/thejameskyle/unstated",
+  "author": "James Kyle <me@thejameskyle.com>",
+  "license": "MIT",
+  "files": ["lib"],
+  "scripts": {
+    "build": "babel src -d lib",
+    "typecheck": "flow",
+    "test": "ava",
+    "format": "prettier --write **/*.{js,json,md}",
+    "prepublish": "yarn run build",
+    "precommit": "lint-staged"
+  },
+  "peerDependencies": {
+    "create-react-context": "^0.1.4",
+    "react": "^15.0.0 || ^16.0.0",
+    "react-dom": "^15.0.0 || ^16.0.0"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
+    "create-react-context": "^0.1.4",
+    "flow-bin": "^0.64.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.1.0",
+    "prettier": "^1.10.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "lint-staged": {
+    "*.{js,json,md}": ["prettier --write", "git add"]
+  }
+}
