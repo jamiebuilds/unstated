@@ -1,5 +1,5 @@
 > **Important!** This library is not actually implemented. It's just a detailed
-> idea. If you want to implement it, just clone the repo and go for it.
+> idea. Implementation will arrive shortly.
 
 # Unstated
 
