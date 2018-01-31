@@ -60,7 +60,7 @@ function App() {
             type="number"
             value={app.state.amount}
             onChange={event => {
-              app.setCounterAmount(event.currentTarget.value);
+              app.setAmount(event.currentTarget.value);
             }}
           />
         </div>

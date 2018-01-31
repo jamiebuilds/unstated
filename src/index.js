@@ -6,7 +6,7 @@ const StateContext = createReactContext();
 
 export class Container<State: {}> {
   state: State;
-  _listeners: Array<Function>;
+  _listeners: Array<() => mixed>;
 
   constructor() {
     this._listeners = [];
@@ -26,12 +26,17 @@ export class Container<State: {}> {
   }
 }
 
-export type SubscribeProps = {
-  to: Array<any>,
-  children: (...containers: Array<any>) => Node
+type ContainerType = Container<Object>;
+type ContainersType = Array<Class<ContainerType>>;
+
+export type SubscribeProps<Containers: ContainersType> = {
+  to: Containers,
+  children: (...instances: $TupleMap<Containers, <C>(Class<C>) => C>) => Node
 };
 
-export class Subscribe extends React.Component<SubscribeProps> {
+export class Subscribe<Containers: ContainersType> extends React.Component<
+  SubscribeProps<Containers>
+> {
   componentDidMount() {
     // ...
   }
@@ -48,7 +53,10 @@ export class Subscribe extends React.Component<SubscribeProps> {
     // ...
   };
 
-  _createInstances(map: Map<any, any>, containers: Array<any>) {
+  _createInstances(
+    map: Map<Class<ContainerType>, ContainerType>,
+    containers: Array<Class<ContainerType>>
+  ): Array<ContainerType> {
     return containers.map(Container => {
       let container = map.get(Container);
       if (!container) {
@@ -79,7 +87,7 @@ export class Subscribe extends React.Component<SubscribeProps> {
 }
 
 export type ProvideProps = {
-  inject: Array<any>,
+  inject: Array<ContainerType>,
   children: Node
 };
 
