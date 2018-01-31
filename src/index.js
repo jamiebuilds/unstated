@@ -26,8 +26,8 @@ export class Container<State: {}> {
   }
 }
 
-type ContainerType = Container<Object>;
-type ContainersType = Array<Class<ContainerType>>;
+export type ContainerType = Container<Object>;
+export type ContainersType = Array<Class<ContainerType>>;
 
 export type SubscribeProps<Containers: ContainersType> = {
   to: Containers,
