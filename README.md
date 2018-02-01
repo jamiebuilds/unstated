@@ -217,6 +217,26 @@ function Counter() {
 
 `<Subscribe>` will automatically construct our container and listen for changes.
 
+*Multiple Subscriptions*
+```js
+function Counter() {
+  addToTotal = (totaler, counter) => () = 
+
+  return (
+    <Subscribe to={[CounterContainer, TotalContainer]}>
+      {(counter, totaler) => (
+        <div>
+          <span>{counter.state.count}</span>
+          <button onClick={counter.decrement}>-</button>
+          <button onClick={counter.increment}>+</button>
+          <button onClick={addToTotal(totaler, counter)}>Add</button>
+        </div>
+      )}
+    </Subscribe>
+  );
+}
+```
+
 ##### `<Provider>`
 
 The final piece that we'll need is something to store all of our instances
