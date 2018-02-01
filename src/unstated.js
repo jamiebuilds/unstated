@@ -13,8 +13,11 @@ export class Container<State: {}> {
     this._listeners = [];
   }
 
-  setState(state: $Shape<State>) {
-    this.state = Object.assign({}, this.state, state);
+  setState(state: $Shape<State> | (State => $Shape<State>)) {
+    this.state =
+      typeof state === 'function'
+        ? state(this.state)
+        : Object.assign({}, this.state, state);
     this._listeners.forEach(fn => fn());
   }
 
