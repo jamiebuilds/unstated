@@ -103,19 +103,25 @@ you want to provide your own instances (perhaps for dependency injection in
 tests), you can do that with `<Provide>`.
 
 ```js
-let counter = new CounterContainer();
+test('counter', () => {
+  let counter = new CounterContainer();
+  assert(counter.state.count === 0);
 
-let tree = render(
-  <Provide inject={[counter]}>
-    <Counter />
-  </Provide>
-);
+  counter.increment();
+  assert(counter.state.count === 1);
 
-click(tree, '#increment');
-assert(counter.state.count === 1);
+  let tree = render(
+    <Provide inject={[counter]}>
+      <Counter />
+    </Provide>
+  );
 
-click(tree, '#increment');
-assert(counter.state.count === 2);
+  click(tree, '#increment');
+  assert(counter.state.count === 2);
+
+  click(tree, '#decrement');
+  assert(counter.state.count === 1);
+});
 ```
 
 `<Provide>` accepts `inject` property which should be an array of container

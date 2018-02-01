@@ -1,8 +1,9 @@
 // @flow
 import React, { type Node } from 'react';
 import createReactContext from 'create-react-context';
+import PropTypes from 'prop-types';
 
-const StateContext = createReactContext();
+const StateContext = createReactContext(null);
 
 export class Container<State: {}> {
   state: State;
@@ -13,7 +14,9 @@ export class Container<State: {}> {
   }
 
   setState(state: $Shape<State>) {
+    debugger;
     this.state = Object.assign({}, this.state, state);
+
     this._listeners.forEach(fn => fn());
   }
 
@@ -34,30 +37,42 @@ export type SubscribeProps<Containers: ContainersType> = {
   children: (...instances: $TupleMap<Containers, <C>(Class<C>) => C>) => Node
 };
 
+const DUMMY_STATE = {};
+
 export class Subscribe<Containers: ContainersType> extends React.Component<
   SubscribeProps<Containers>
 > {
-  componentDidMount() {
-    // ...
-  }
+  static propTypes = {
+    to: PropTypes.array.isRequired,
+    children: PropTypes.func.isRequired
+  };
+
+  state = {};
+  _instances: Array<ContainerType> = [];
 
   componentWillReceiveProps() {
-    // ...
+    this._unsubscribe();
   }
 
   componentWillUnmount() {
-    // ...
+    this._unsubscribe(this.props.to);
+  }
+
+  _unsubscribe(containers: Array<ContainerType>) {
+    this._instances.forEach(container => {
+      container._unsubscribe(this.onUpdate);
+    });
   }
 
   onUpdate = () => {
-    // ...
+    this.setState(DUMMY_STATE);
   };
 
   _createInstances(
     map: Map<Class<ContainerType>, ContainerType>,
     containers: Array<Class<ContainerType>>
   ): Array<ContainerType> {
-    return containers.map(Container => {
+    this._instances = containers.map(Container => {
       let container = map.get(Container);
       if (!container) {
         container = new Container();
@@ -65,6 +80,12 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
       }
       return container;
     });
+
+    this._instances.forEach(instance => {
+      instance._subscribe(this.onUpdate);
+    });
+
+    return this._instances;
   }
 
   render() {
@@ -72,12 +93,10 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
       <StateContext.Consumer>
         {parentMap => {
           let childMap = new Map(parentMap);
+          let instances = this._createInstances(childMap, this.props.to);
           return (
             <StateContext.Provider value={childMap}>
-              {this.props.children.apply(
-                null,
-                this._createInstances(childMap, this.props.to)
-              )}
+              {this.props.children.apply(null, instances)}
             </StateContext.Provider>
           );
         }}
