@@ -1,16 +1,1 @@
-{
-  "presets": [
-    [
-      "env",
-      {
-        "loose": true,
-        "targets": {
-          "browsers": ["last 1 version"]
-        }
-      }
-    ],
-    "flow",
-    "react"
-  ],
-  "plugins": ["transform-class-properties"]
-}
+{ "presets": ["./.babelrc.js"] }
