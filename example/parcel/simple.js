@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider, Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Container } from '../../src/unstated';
 
 type CounterState = {
   count: number
