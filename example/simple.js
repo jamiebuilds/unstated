@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Container } from '../src/unstated';
 
 type CounterState = {
   count: number
@@ -33,4 +33,9 @@ function Counter() {
   );
 }
 
-render(<Counter />, window.simple);
+render(
+  <Provider>
+    <Counter />
+  </Provider>,
+  window.simple
+);

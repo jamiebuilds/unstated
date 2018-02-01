@@ -3,7 +3,7 @@ import React, { type Node } from 'react';
 import createReactContext from 'create-react-context';
 import PropTypes from 'prop-types';
 
-const StateContext = createReactContext(new Map([]));
+const StateContext = createReactContext(null);
 
 export class Container<State: {}> {
   state: State;
@@ -18,11 +18,11 @@ export class Container<State: {}> {
     this._listeners.forEach(fn => fn());
   }
 
-  _subscribe(fn: Function) {
+  subscribe(fn: Function) {
     this._listeners.push(fn);
   }
 
-  _unsubscribe(fn: Function) {
+  unsubscribe(fn: Function) {
     this._listeners = this._listeners.filter(f => f !== fn);
   }
 }
@@ -50,8 +50,7 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
   };
 
   state = {};
-  _map: ContainerMapType = new Map();
-  _instances: Array<ContainerType> = [];
+  instances: Array<ContainerType> = [];
 
   componentWillReceiveProps() {
     this._unsubscribe();
@@ -62,8 +61,8 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
   }
 
   _unsubscribe() {
-    this._instances.forEach(container => {
-      container._unsubscribe(this.onUpdate);
+    this.instances.forEach(container => {
+      container.unsubscribe(this.onUpdate);
     });
   }
 
@@ -72,65 +71,71 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
   };
 
   _createInstances(
-    parentMap: ContainerMapType,
+    map: ContainerMapType | null,
     containers: ContainersType
   ): Array<ContainerType> {
-    this._instances = containers.map(Container => {
-      let container = parentMap.get(Container) || this._map.get(Container);
+    if (map === null) {
+      throw new Error(
+        'You must wrap your <Subscribe> components with a <Provider>'
+      );
+    }
 
-      if (!container) {
-        container = new Container();
-        this._map.set(Container, container);
+    let safeMap = map;
+    let instances = containers.map(Container => {
+      let instance = safeMap.get(Container);
+
+      if (!instance) {
+        instance = new Container();
+        safeMap.set(Container, instance);
       }
 
-      return container;
+      instance.unsubscribe(this.onUpdate);
+      instance.subscribe(this.onUpdate);
+
+      return instance;
     });
 
-    this._instances.forEach(instance => {
-      instance._subscribe(this.onUpdate);
-    });
-
-    return this._instances;
+    this.instances = instances;
+    return instances;
   }
 
   render() {
     return (
       <StateContext.Consumer>
-        {parentMap => {
-          let instances = this._createInstances(parentMap, this.props.to);
-          let childMap = new Map();
-
-          for (let [key, val] of parentMap) childMap.set(key, val);
-          for (let [key, val] of this._map) childMap.set(key, val);
-
-          return (
-            <StateContext.Provider value={childMap}>
-              {this.props.children.apply(null, instances)}
-            </StateContext.Provider>
-          );
-        }}
+        {map =>
+          this.props.children.apply(
+            null,
+            this._createInstances(map, this.props.to)
+          )
+        }
       </StateContext.Consumer>
     );
   }
 }
 
-export type ProvideProps = {
-  inject: Array<ContainerType>,
+export type ProviderProps = {
+  inject?: Array<ContainerType>,
   children: Node
 };
 
-export class Provide extends React.Component<ProvideProps> {
-  render() {
-    let map = new Map();
+export function Provider(props: ProviderProps) {
+  return (
+    <StateContext.Consumer>
+      {parentMap => {
+        let childMap = new Map(parentMap);
 
-    this.props.inject.forEach(instance => {
-      map.set(instance.constructor, instance);
-    });
+        if (props.inject) {
+          props.inject.forEach(instance => {
+            childMap.set(instance.constructor, instance);
+          });
+        }
 
-    return (
-      <StateContext.Provider value={map}>
-        {this.props.children}
-      </StateContext.Provider>
-    );
-  }
+        return (
+          <StateContext.Provider value={childMap}>
+            {this.props.children}
+          </StateContext.Provider>
+        );
+      }}
+    </StateContext.Consumer>
+  );
 }

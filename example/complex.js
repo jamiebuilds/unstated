@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Container } from '../src/unstated';
 
 type AppState = {
   amount: number
@@ -69,4 +69,9 @@ function App() {
   );
 }
 
-render(<App />, window.complex);
+render(
+  <Provider>
+    <App />
+  </Provider>,
+  window.complex
+);

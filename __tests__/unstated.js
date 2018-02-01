@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { Provide, Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Container } from '../src/unstated';
 
 function render(element) {
   return renderer.create(element).toJSON();
