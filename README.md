@@ -1,5 +1,7 @@
 <div align="center">
+  <br><br><br><br><br>
   <img src="https://raw.githubusercontent.com/thejameskyle/unstated/master/logo.png" alt="Unstated Logo" width="400">
+  <br><br><br><br><br><br><br><br><br><br>
 </div>
 
 # Unstated
