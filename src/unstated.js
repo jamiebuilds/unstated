@@ -132,7 +132,7 @@ export function Provider(props: ProviderProps) {
 
         return (
           <StateContext.Provider value={childMap}>
-            {this.props.children}
+            {props.children}
           </StateContext.Provider>
         );
       }}
