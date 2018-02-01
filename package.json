@@ -8,11 +8,12 @@
   "license": "MIT",
   "files": ["lib"],
   "scripts": {
-    "build": "babel src -d lib",
+    "clean": "rm -rf lib",
+    "build": "babel src -Dd lib && flow-copy-source src lib",
     "typecheck": "flow",
     "test": "jest",
     "format": "prettier --write **/*.{js,json,md}",
-    "prepublish": "yarn run build",
+    "prepublish": "yarn clean && yarn build",
     "precommit": "lint-staged",
     "example": "parcel example/index.html"
   },
@@ -31,6 +32,7 @@
     "babel-register": "^6.26.0",
     "create-react-context": "^0.1.4",
     "flow-bin": "^0.64.0",
+    "flow-copy-source": "^1.2.2",
     "husky": "^0.14.3",
     "jest": "^22.1.4",
     "jsdom": "^11.6.2",
