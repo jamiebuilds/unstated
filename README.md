@@ -1,4 +1,6 @@
-![Unstated Logo](https://raw.githubusercontent.com/thejameskyle/unstated/master/logo.png)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/thejameskyle/unstated/master/logo.png" alt="Unstated Logo" width="400">
+</div>
 
 # Unstated
 
