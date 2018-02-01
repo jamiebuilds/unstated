@@ -1,5 +1,4 @@
-> **Important!** This library is not actually implemented. It's just a detailed
-> idea. Implementation will arrive shortly.
+![Unstated Logo](https://raw.githubusercontent.com/thejameskyle/unstated/master/logo.png)
 
 # Unstated
 
