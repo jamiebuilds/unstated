@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Subscribe, Container } from '../src';
+import { Subscribe, Container } from '../src/unstated';
 
 type CounterState = {
   count: number
@@ -24,15 +24,13 @@ function Counter() {
     <Subscribe to={[CounterContainer]}>
       {counter => (
         <div>
-          <button onClick={counter.decrement}>-</button>
+          <button onClick={() => counter.decrement()}>-</button>
           <span>{counter.state.count}</span>
-          <button onClick={counter.increment}>+</button>
+          <button onClick={() => counter.increment()}>+</button>
         </div>
       )}
     </Subscribe>
   );
 }
 
-let root = document.getElementById('root');
-if (!root) throw new Error('Missing #root');
-render(<Counter />, root);
+render(<Counter />, window.simple);

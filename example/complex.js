@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Subscribe, Container } from '../src';
+import { Subscribe, Container } from '../src/unstated';
 
 type AppState = {
   amount: number
@@ -60,7 +60,7 @@ function App() {
             type="number"
             value={app.state.amount}
             onChange={event => {
-              app.setAmount(event.currentTarget.value);
+              app.setAmount(parseInt(event.currentTarget.value, 10));
             }}
           />
         </div>
@@ -69,6 +69,4 @@ function App() {
   );
 }
 
-let root = document.getElementById('root');
-if (!root) throw new Error('Missing #root');
-render(<App />, root);
+render(<App />, window.complex);

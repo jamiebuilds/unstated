@@ -41,9 +41,9 @@ function Counter() {
     <Subscribe to={[CounterContainer]}>
       {counter => (
         <div>
-          <button onClick={counter.decrement}>-</button>
+          <button onClick={() => counter.decrement()}>-</button>
           <span>{counter.state.count}</span>
-          <button onClick={counter.increment}>+</button>
+          <button onClick={() => counter.increment()}>+</button>
         </div>
       )}
     </Subscribe>
