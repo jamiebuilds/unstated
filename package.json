@@ -17,7 +17,8 @@
     "format": "prettier --write **/*.{js,json,md}",
     "prepublish": "yarn clean && yarn build",
     "precommit": "lint-staged",
-    "example": "parcel example/index.html"
+    "example": "parcel example/index.html",
+    "typescript": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "create-react-context": "^0.1.5"
@@ -28,6 +29,7 @@
     "react-dom": "^15.0.0 || ^16.0.0"
   },
   "devDependencies": {
+    "@types/react": "^16.0.36",
     "babel-core": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
@@ -48,7 +50,8 @@
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
     "rollup": "^0.55.3",
-    "rollup-plugin-babel": "^3.0.3"
+    "rollup-plugin-babel": "^3.0.3",
+    "typescript": "^2.7.1"
   },
   "lint-staged": {
     "*.{js,json,md}": ["prettier --write", "git add"]
