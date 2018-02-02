@@ -1,0 +1,360 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Subscribes share Containers instances 1`] = `
+<Provider>
+  <Consumer>
+    <Provider
+      value={
+        Map {
+          [Function] => CounterContainer {
+            "_listeners": Array [
+              [Function],
+              [Function],
+              [Function],
+            ],
+            "state": Object {
+              "count": 0,
+            },
+          },
+        }
+      }
+    >
+      <Counter>
+        <Subscribe
+          to={
+            Array [
+              [Function],
+            ]
+          }
+        >
+          <Consumer>
+            <div>
+              <span>
+                0
+              </span>
+              <button
+                onClick={[Function]}
+              >
+                -
+              </button>
+              <button
+                onClick={[Function]}
+              >
+                +
+              </button>
+            </div>
+          </Consumer>
+        </Subscribe>
+      </Counter>
+      <Counter>
+        <Subscribe
+          to={
+            Array [
+              [Function],
+            ]
+          }
+        >
+          <Consumer>
+            <div>
+              <span>
+                0
+              </span>
+              <button
+                onClick={[Function]}
+              >
+                -
+              </button>
+              <button
+                onClick={[Function]}
+              >
+                +
+              </button>
+            </div>
+          </Consumer>
+        </Subscribe>
+      </Counter>
+      <Counter>
+        <Subscribe
+          to={
+            Array [
+              [Function],
+            ]
+          }
+        >
+          <Consumer>
+            <div>
+              <span>
+                0
+              </span>
+              <button
+                onClick={[Function]}
+              >
+                -
+              </button>
+              <button
+                onClick={[Function]}
+              >
+                +
+              </button>
+            </div>
+          </Consumer>
+        </Subscribe>
+      </Counter>
+    </Provider>
+  </Consumer>
+</Provider>
+`;
+
+exports[`Subscribes share Containers instances 2`] = `
+<Provider>
+  <Consumer>
+    <Provider
+      value={
+        Map {
+          [Function] => CounterContainer {
+            "_listeners": Array [
+              [Function],
+              [Function],
+              [Function],
+            ],
+            "state": Object {
+              "count": 2,
+            },
+          },
+        }
+      }
+    >
+      <Counter>
+        <Subscribe
+          to={
+            Array [
+              [Function],
+            ]
+          }
+        >
+          <Consumer>
+            <div>
+              <span>
+                2
+              </span>
+              <button
+                onClick={[Function]}
+              >
+                -
+              </button>
+              <button
+                onClick={[Function]}
+              >
+                +
+              </button>
+            </div>
+          </Consumer>
+        </Subscribe>
+      </Counter>
+      <Counter>
+        <Subscribe
+          to={
+            Array [
+              [Function],
+            ]
+          }
+        >
+          <Consumer>
+            <div>
+              <span>
+                2
+              </span>
+              <button
+                onClick={[Function]}
+              >
+                -
+              </button>
+              <button
+                onClick={[Function]}
+              >
+                +
+              </button>
+            </div>
+          </Consumer>
+        </Subscribe>
+      </Counter>
+      <Counter>
+        <Subscribe
+          to={
+            Array [
+              [Function],
+            ]
+          }
+        >
+          <Consumer>
+            <div>
+              <span>
+                2
+              </span>
+              <button
+                onClick={[Function]}
+              >
+                -
+              </button>
+              <button
+                onClick={[Function]}
+              >
+                +
+              </button>
+            </div>
+          </Consumer>
+        </Subscribe>
+      </Counter>
+    </Provider>
+  </Consumer>
+</Provider>
+`;
+
+exports[`component can change container's state 1`] = `
+<Provider>
+  <Consumer>
+    <Provider
+      value={
+        Map {
+          [Function] => CounterContainer {
+            "_listeners": Array [
+              [Function],
+            ],
+            "state": Object {
+              "count": 0,
+            },
+          },
+        }
+      }
+    >
+      <Counter>
+        <Subscribe
+          to={
+            Array [
+              [Function],
+            ]
+          }
+        >
+          <Consumer>
+            <div>
+              <span>
+                0
+              </span>
+              <button
+                onClick={[Function]}
+              >
+                -
+              </button>
+              <button
+                onClick={[Function]}
+              >
+                +
+              </button>
+            </div>
+          </Consumer>
+        </Subscribe>
+      </Counter>
+    </Provider>
+  </Consumer>
+</Provider>
+`;
+
+exports[`component can change container's state 2`] = `
+<Provider>
+  <Consumer>
+    <Provider
+      value={
+        Map {
+          [Function] => CounterContainer {
+            "_listeners": Array [
+              [Function],
+            ],
+            "state": Object {
+              "count": 2,
+            },
+          },
+        }
+      }
+    >
+      <Counter>
+        <Subscribe
+          to={
+            Array [
+              [Function],
+            ]
+          }
+        >
+          <Consumer>
+            <div>
+              <span>
+                2
+              </span>
+              <button
+                onClick={[Function]}
+              >
+                -
+              </button>
+              <button
+                onClick={[Function]}
+              >
+                +
+              </button>
+            </div>
+          </Consumer>
+        </Subscribe>
+      </Counter>
+    </Provider>
+  </Consumer>
+</Provider>
+`;
+
+exports[`component with Subscribe renders fine 1`] = `
+<Provider>
+  <Consumer>
+    <Provider
+      value={
+        Map {
+          [Function] => CounterContainer {
+            "_listeners": Array [
+              [Function],
+            ],
+            "state": Object {
+              "count": 0,
+            },
+          },
+        }
+      }
+    >
+      <Counter>
+        <Subscribe
+          to={
+            Array [
+              [Function],
+            ]
+          }
+        >
+          <Consumer>
+            <div>
+              <span>
+                0
+              </span>
+              <button
+                onClick={[Function]}
+              >
+                -
+              </button>
+              <button
+                onClick={[Function]}
+              >
+                +
+              </button>
+            </div>
+          </Consumer>
+        </Subscribe>
+      </Counter>
+    </Provider>
+  </Consumer>
+</Provider>
+`;
+
+exports[`throws when not in a Provider's subtree 1`] = `"You must wrap your <Subscribe> components with a <Provider>"`;
