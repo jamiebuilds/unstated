@@ -185,7 +185,7 @@ class CounterContainer extends Container {
 }
 ```
 
-Behind the scenes our `Container`'s are also an event emitters that our app can
+Behind the scenes our `Container`s are also event emitters that our app can
 subscribe to for updates.
 
 ##### `<Subscribe>`
