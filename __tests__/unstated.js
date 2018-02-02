@@ -10,10 +10,10 @@ function render(element) {
 class CounterContainer extends Container<{ count: number }> {
   state = { count: 0 };
   increment(amount = 1) {
-    this.setState({ count: this.state.count + amount });
+    this.setState(prevState => ({ count: prevState.count + amount }));
   }
   decrement(amount = 1) {
-    this.setState({ count: this.state.count - amount });
+    this.setState(prevState => ({ count: prevState.count - amount }));
   }
 }
 
