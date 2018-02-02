@@ -31,11 +31,11 @@ class CounterContainer extends Container<CounterState> {
   };
 
   increment() {
-    this.setState({ count: this.state.count + 1 });
+    this.setState((prevState) => ({ count: prevState.count + 1 }));
   }
 
   decrement() {
-    this.setState({ count: this.state.count - 1 });
+    this.setState((prevState) => ({ count: prevState.count - 1 }));
   }
 }
 
@@ -70,10 +70,10 @@ Component state is nice! It makes sense and people pick it up quickly:
 class Counter extends React.Component {
   state = { count: 0 };
   increment = () => {
-    this.setState({ count: this.state.count + 1 });
+    this.setState((prevState) => ({ count: prevState.count + 1 }));
   };
   decrement = () => {
-    this.setState({ count: this.state.count - 1 });
+    this.setState((prevState) => ({ count: prevState.count - 1 }));
   };
   render() {
     return (
@@ -107,8 +107,8 @@ const Amount = React.createContext(1);
 
 class Counter extends React.Component {
   state = { count: 0 };
-  increment = amount => { this.setState({ count: this.state.count + amount }); };
-  decrement = amount => { this.setState({ count: this.state.count - amount }); };
+  increment = amount => { this.setState((prevState) => ({ count: prevState.count + amount })); };
+  decrement = amount => { this.setState((prevState) => ({ count: prevState.count - amount })); };
   render() {
     return (
       <Amount.Consumer>
@@ -177,10 +177,10 @@ updating it.
 class CounterContainer extends Container {
   state = { count: 0 };
   increment = () => {
-    this.setState({ count: this.state.count + 1 });
+    this.setState((prevState) => ({ count: prevState.count + 1 }));
   };
   decrement = () => {
-    this.setState({ count: this.state.count - 1 });
+    this.setState((prevState) => ({ count: prevState.count - 1 }));
   };
 }
 ```
