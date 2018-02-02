@@ -11,7 +11,7 @@
 ## Installation
 
 ```sh
-yarn add unstated
+yarn add unstated create-react-context
 ```
 
 ## Example
