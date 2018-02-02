@@ -188,6 +188,9 @@ class CounterContainer extends Container {
 Behind the scenes our `Container`'s are also an event emitters that our app can
 subscribe to for updates.
 
+> **Note:** Do not mutate the `state` directly but instead use `setState` inside
+> of a mutator function.
+
 ##### `<Subscribe>`
 
 Next we'll need a piece to introduce our state back into the tree so that:
