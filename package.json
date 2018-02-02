@@ -19,8 +19,10 @@
     "precommit": "lint-staged",
     "example": "parcel example/index.html"
   },
+  "dependencies": {
+    "create-react-context": "^0.1.5"
+  },
   "peerDependencies": {
-    "create-react-context": "^0.1.5",
     "prop-types": "^15.5.0",
     "react": "^15.0.0 || ^16.0.0",
     "react-dom": "^15.0.0 || ^16.0.0"
