@@ -8,4 +8,6 @@ cache:
   yarn: true
   directories:
   - node_modules
-script: yarn test && yarn flow
+script: 
+  - yarn test && yarn flow
+  - yarn typescript
