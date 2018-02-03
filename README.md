@@ -186,7 +186,9 @@ class CounterContainer extends Container {
 ```
 
 Behind the scenes our `Container`s are also event emitters that our app can
-subscribe to for updates.
+subscribe to for updates. When you call `setState` it triggers components to
+re-render, be careful not to mutate `this.state` directly or your components
+won't re-render.
 
 ##### `<Subscribe>`
 
