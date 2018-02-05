@@ -1,7 +1,7 @@
 {
   "name": "unstated",
   "version": "1.0.3",
-  "description": "State ain't shit",
+  "description": "State that goes without saying",
   "main": "lib/unstated.js",
   "module": "lib/unstated.es.js",
   "repository": "https://github.com/thejameskyle/unstated",
