@@ -15,7 +15,7 @@ export default {
     {
       file: 'lib/unstated.umd.js',
       format: 'umd',
-      name: pkg.name,
+      name: 'Unstated',
     }
   ],
   external: [
