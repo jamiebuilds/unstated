@@ -6,7 +6,7 @@
 
 # Unstated
 
-> State ain't shit
+> State that goes without saying
 
 ## Installation
 
