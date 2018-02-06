@@ -1352,9 +1352,9 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-context@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/create-react-context/-/create-react-context-0.1.4.tgz#67da7ca1f5db00b7df1932f82940c468b04267cc"
+create-react-context@^0.1.5:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/create-react-context/-/create-react-context-0.1.6.tgz#0f425931d907741127acc6e31acb4f9015dd9fdc"
 
 cross-spawn@^5.0.1, cross-spawn@^5.1.0:
   version "5.1.0"
