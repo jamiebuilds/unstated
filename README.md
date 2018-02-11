@@ -311,3 +311,55 @@ test('counter', () => {
 
 We don't even have to do anything to clean up after ourselves because we just
 throw everything out afterwards.
+
+## FAQ
+
+#### What state should I put into Unstated?
+
+The React community has focused a lot on trying to put all their state in one
+place. You could keep doing that with Unstated, but I wouldn't recommend it.
+
+I would recommend a multi-part solution.
+
+First, use local component state as much as you possibly can. That counter
+example from above never should have been refactored away from component
+state, it was fine before Unstated.
+
+Second, use libraries to abstract away the bits of state that you'll repeat
+over and over.
+
+Like if form state has you down, you might want to use a library like
+[Final Form](https://github.com/final-form/react-final-form).
+
+If fetching data is getting to be too much, maybe try out [Apollo](https://www.apollographql.com).
+Or even something uncool but familiar and reliable like [Backbone models and collections](http://backbonejs.org).
+What? Are you too cool to use an old framework?
+
+Third, a lot of shared state between components is localized to a few
+components in the tree.
+
+```js
+<Tabs>
+  <Tab>One</Tab>
+  <Tab>Two</Tab>
+  <Tab>Three</Tab>
+</Tabs>
+```
+
+For this, I recommend using React's built-in `React.createContext()` API
+and being careful in designing the API for the base components you create.
+
+> **Note:** If you're on an old version of React and want to use the new
+> context API, [I've got you](https://github.com/thejameskyle/create-react-context/)
+
+Finally, (and only after other things are exhausted), if you really need
+some global state to be shared throughout your app, you can use Unstated.
+
+I know all of this might sound somehow more complicated, but it's a
+matter of using the right tool for the job and not forcing a single
+paradigm on the entire universe.
+
+Unstated isn't ambitious, use it as you need it, it's nice and small for
+that reason. Don't think of it as a "Redux killer". Don't go trying to
+build complex tools on top of it. Don't reinvent the wheel. Just try it
+out and see how you like it. 
