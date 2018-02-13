@@ -6,7 +6,7 @@
 
 # Unstated
 
-> State that goes without saying
+> State so simple, it goes without saying
 
 ## Installation
 
