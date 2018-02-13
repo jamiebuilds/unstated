@@ -1,7 +1,7 @@
 {
   "name": "unstated",
   "version": "1.0.3",
-  "description": "State that goes without saying",
+  "description": "State so simple, it goes without saying",
   "main": "lib/unstated.js",
   "module": "lib/unstated.es.js",
   "types": "lib/unstated.d.ts",
