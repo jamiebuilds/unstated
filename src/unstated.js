@@ -13,7 +13,7 @@ export class Container<State: {}> {
     this._listeners = [];
   }
 
-  setState(state: $Shape<State>, force: Boolean) {
+  setState(state: $Shape<State>, force?: Boolean) {
     this.state = force ? state : Object.assign({}, this.state, state);
     this._listeners.forEach(fn => fn());
   }
