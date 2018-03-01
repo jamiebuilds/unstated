@@ -58,6 +58,20 @@ render(<Counter />, document.getElementById('root'));
 
 For more examples, see the `example/` directory.
 
+## Happy Customers
+
+<h4 align="center">
+  "Unstated is a breath of fresh air for state management. I rewrote my whole app to use it yesterday."
+  <br><br>
+  <a href="https://twitter.com/sindresorhus">Sindre Sorhus</a>
+</h4>
+
+<h4 align="center">
+  "When people say you don't need Redux most of the time, they actually mean you do need Unstated.<br>It's like setState on fucking horse steroids"
+  <br><br>
+  <a href="https://twitter.com/ken_wheeler">Ken Wheeler</a> (obviously)
+</h4>
+
 ## Guide
 
 If you're like me, you're sick of all the ceremony around state management in
