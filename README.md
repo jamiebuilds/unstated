@@ -213,7 +213,7 @@ Next we'll need a piece to introduce our state back into the tree so that:
 * We can call methods on our container.
 
 For this we have the `<Subscribe>` component which allows us to pass our
-container classes and receive instances of them in the tree.
+container classes/instances and receive instances of them in the tree.
 
 ```js
 function Counter() {
@@ -376,4 +376,4 @@ paradigm on the entire universe.
 Unstated isn't ambitious, use it as you need it, it's nice and small for
 that reason. Don't think of it as a "Redux killer". Don't go trying to
 build complex tools on top of it. Don't reinvent the wheel. Just try it
-out and see how you like it. 
+out and see how you like it.
