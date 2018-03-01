@@ -24,12 +24,14 @@ export class Container<State: {}> {
 }
 
 export type ContainerType = Container<Object>;
-export type ContainersType = Array<Class<ContainerType>>;
+export type ContainersType = Array<Class<ContainerType> | ContainerType>;
 export type ContainerMapType = Map<Class<ContainerType>, ContainerType>;
 
 export type SubscribeProps<Containers: ContainersType> = {
   to: Containers,
-  children: (...instances: $TupleMap<Containers, <C>(Class<C>) => C>) => Node
+  children: (
+    ...instances: $TupleMap<Containers, <C>(Class<C> | C) => C>
+  ) => Node
 };
 
 type SubscribeState = {};
@@ -75,12 +77,26 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
     }
 
     let safeMap = map;
-    let instances = containers.map(Container => {
-      let instance = safeMap.get(Container);
+    let instances = containers.map(ContainerItem => {
+      let instance: ContainerType;
 
-      if (!instance) {
-        instance = new Container();
-        safeMap.set(Container, instance);
+      if (
+        typeof ContainerItem === 'object' &&
+        ContainerItem instanceof Container
+      ) {
+        instance = ContainerItem;
+
+        let Class = instance.constructor;
+        if (!safeMap.has(Class)) {
+          safeMap.set(Class, instance);
+        }
+      } else {
+        instance = (safeMap.get(ContainerItem): any);
+
+        if (!instance) {
+          instance = new ContainerItem();
+          safeMap.set(ContainerItem, instance);
+        }
       }
 
       instance.unsubscribe(this.onUpdate);

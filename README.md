@@ -219,7 +219,7 @@ Next we'll need a piece to introduce our state back into the tree so that:
 * We can call methods on our container.
 
 For this we have the `<Subscribe>` component which allows us to pass our
-container classes and receive instances of them in the tree.
+container classes/instances and receive instances of them in the tree.
 
 ```js
 function Counter() {

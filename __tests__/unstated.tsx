@@ -69,6 +69,25 @@ function CounterWithAmountApp() {
   );
 }
 
+const sharedAmountContainer = new AmountContainer();
+function CounterWithSharedAmountApp() {
+    <Subscribe to={[sharedAmountContainer]}>
+      {(amounter: AmounterContainer) => (
+        <div>
+          <Counter />
+          <input
+            type="number"
+            value={amounter.state.amount}
+            onChange={event => {
+              amounter.setAmount(parseInt(event.currentTarget.value, 10));
+            }}
+          />
+        </div>
+      )}
+    </Subscribe>
+  );
+}
+
 let counter = new CounterContainer();
 let render = () => (
   <Provider inject={[counter]}>
