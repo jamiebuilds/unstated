@@ -17,9 +17,10 @@ yarn add unstated
 ## Example
 
 ```js
+// @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Subscribe, Container } from 'unstated';
+import { Provider, Subscribe, Container } from 'unstated';
 
 type CounterState = {
   count: number
@@ -53,7 +54,12 @@ function Counter() {
   );
 }
 
-render(<Counter />, document.getElementById('root'));
+render(
+  <Provider>
+    <Counter />
+  </Provider>,
+  document.getElementById('root')
+);
 ```
 
 For more examples, see the `example/` directory.
@@ -376,4 +382,4 @@ paradigm on the entire universe.
 Unstated isn't ambitious, use it as you need it, it's nice and small for
 that reason. Don't think of it as a "Redux killer". Don't go trying to
 build complex tools on top of it. Don't reinvent the wheel. Just try it
-out and see how you like it. 
+out and see how you like it.
