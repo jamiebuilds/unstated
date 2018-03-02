@@ -84,7 +84,7 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
 
     let safeMap = map;
     let instances = containers.map(ContainerItem => {
-      let instance: ContainerType;
+      let instance;
 
       if (
         typeof ContainerItem === 'object' &&
@@ -97,7 +97,7 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
           safeMap.set(Class, instance);
         }
       } else {
-        instance = (safeMap.get(ContainerItem): any);
+        instance = safeMap.get(ContainerItem);
 
         if (!instance) {
           instance = new ContainerItem();
