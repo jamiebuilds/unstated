@@ -1,5 +1,5 @@
 // @flow
-import React, { type Node } from 'react';
+import React, { type Node, Component } from 'react';
 import createReactContext from 'create-react-context';
 import PropTypes from 'prop-types';
 
@@ -139,3 +139,51 @@ export function Provider(props: ProviderProps) {
     </StateContext.Consumer>
   );
 }
+
+type OrigProps = Object;
+
+export type MapProps<Container: ContainerType> = (Container, OrigProps) => {};
+export type Init<Container: ContainerType> = (Container, OrigProps) => any;
+
+type RendererProps = {
+  init?: Init<ContainerType>,
+  states: ContainersType,
+  origProps: OrigProps,
+  BaseComp: Component<OrigProps>,
+  mapProps: MapProps<ContainerType>
+};
+
+class Renderer extends Component<RendererProps> {
+  componentDidMount() {
+    const { init, states, origProps } = this.props;
+    if (init) {
+      init(...states, origProps);
+    }
+  }
+  render() {
+    const { BaseComp, origProps, mapProps, states } = this.props;
+    const props = mapProps(...states, origProps);
+    return <BaseComp {...origProps} {...props} />;
+  }
+}
+
+export const connect = (
+  to: Class<ContainerType> | Array<Class<ContainerType>>,
+  mapProps: MapProps<ContainerType>,
+  init?: Init<ContainerType>
+) => (BaseComp: ComponentType<any>): ComponentType<any> => (
+  origProps: OrigProps
+) => (
+  <Subscribe to={Array.isArray(to) ? to : [to]}>
+    {(...states) => {
+      const props: RendererProps = {
+        init,
+        mapProps,
+        BaseComp,
+        origProps,
+        states
+      };
+      return <Renderer {...props} />;
+    }}
+  </Subscribe>
+);
