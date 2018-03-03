@@ -141,7 +141,7 @@ export function Provider(props: ProviderProps) {
 }
 
 type ContainersMap = {
-  [string]: typeof Container
+  [string]: *
 };
 
 export const withSubscription = (containersMap: ContainersMap) => (
