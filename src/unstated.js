@@ -156,10 +156,10 @@ export const withSubscription = (containersMap: ContainersMap) => (
     <Subscribe to={containers}>
       {(...containerInstances) => {
         const containerProps = containerInstances.reduce(
-          (accumulator, instance, index) => ({
-            ...accumulator,
-            [containerKeys[index]]: instance
-          }),
+          (accumulator, instance, index) =>
+            Object.assign({}, accumulator, {
+              [containerKeys[index]]: instance
+            }),
           {}
         );
         return <WrappedComponent {...props} {...containerProps} />;
