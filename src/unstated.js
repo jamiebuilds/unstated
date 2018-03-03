@@ -1,5 +1,5 @@
 // @flow
-import React, { type Node } from 'react';
+import React, { type ComponentType, type Node } from 'react';
 import createReactContext from 'create-react-context';
 import PropTypes from 'prop-types';
 
@@ -139,3 +139,31 @@ export function Provider(props: ProviderProps) {
     </StateContext.Consumer>
   );
 }
+
+type ContainersMap = {
+  [string]: typeof Container
+};
+
+export const withSubscription = (containersMap: ContainersMap) => (
+  WrappedComponent: ComponentType<*>
+) => (props: *) => {
+  const containerKeys = Object.keys(containersMap);
+  const containers = containerKeys.map(
+    containerKey => containersMap[containerKey]
+  );
+
+  return (
+    <Subscribe to={containers}>
+      {(...containerInstances) => {
+        const containerProps = containerInstances.reduce(
+          (accumulator, instance, index) => ({
+            ...accumulator,
+            [containerKeys[index]]: instance
+          }),
+          {}
+        );
+        return <WrappedComponent {...props} {...containerProps} />;
+      }}
+    </Subscribe>
+  );
+};
