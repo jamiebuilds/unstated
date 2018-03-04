@@ -66,7 +66,7 @@ For more examples, see the `example/` directory.
 
 ## Quick Start
 
-If you would like to try out unstated or test new ideas you can use [this boilerplate template](https://github.com/ahmedtarek2134/react-unstated-boilerplate) or [this codesandbox](https://codesandbox.io/s/github/thejameskyle/unstated/tree/codesandbox-example/example/codesandbox) as a quick starting point.
+If you would like to try out unstated or test new ideas you can use [this boilerplate template](https://github.com/ahmedtarek2134/react-unstated-boilerplate) as a quick starting point.
 
 ## Happy Customers
 
