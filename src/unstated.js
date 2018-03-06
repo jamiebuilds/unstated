@@ -7,11 +7,7 @@ const StateContext = createReactContext(null);
 
 export class Container<State: {}> {
   state: State;
-  _listeners: Array<() => mixed>;
-
-  constructor() {
-    this._listeners = [];
-  }
+  _listeners: Array<() => mixed> = [];
 
   setState(state: $Shape<State>) {
     this.state = Object.assign({}, this.state, state);
