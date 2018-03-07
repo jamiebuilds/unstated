@@ -48,7 +48,7 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
   state = {};
   instances: Array<ContainerType> = [];
 
-  componentWillReceiveProps() {
+  componentDidUpdate() {
     this._unsubscribe();
   }
 
