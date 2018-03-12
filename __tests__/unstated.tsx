@@ -70,7 +70,9 @@ function CounterWithAmountApp() {
 }
 
 const sharedAmountContainer = new AmountContainer();
+
 function CounterWithSharedAmountApp() {
+  return (
     <Subscribe to={[sharedAmountContainer]}>
       {(amounter: AmounterContainer) => (
         <div>
