@@ -90,10 +90,14 @@ Component state is nice! It makes sense and people pick it up quickly:
 class Counter extends React.Component {
   state = { count: 0 };
   increment = () => {
-    this.setState({ count: this.state.count + 1 });
+    this.setState((prevState) => {
+      return { count: prevState.count + 1 }
+    });
   };
   decrement = () => {
-    this.setState({ count: this.state.count - 1 });
+    this.setState((prevState) => {
+      return { count: prevState.count - 1 }
+    });
   };
   render() {
     return (
