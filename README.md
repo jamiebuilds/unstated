@@ -64,6 +64,10 @@ render(
 
 For more examples, see the `example/` directory.
 
+## Quick Start
+
+If you would like to try out unstated or test new ideas you can use [this boilerplate template](https://github.com/ahmedtarek2134/react-unstated-boilerplate) as a quick starting point.
+
 ## Happy Customers
 
 <h4 align="center">
@@ -383,3 +387,5 @@ Unstated isn't ambitious, use it as you need it, it's nice and small for
 that reason. Don't think of it as a "Redux killer". Don't go trying to
 build complex tools on top of it. Don't reinvent the wheel. Just try it
 out and see how you like it.
+
+
