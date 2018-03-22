@@ -85,11 +85,6 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
         ContainerItem instanceof Container
       ) {
         instance = ContainerItem;
-
-        let Class = instance.constructor;
-        if (!safeMap.has(Class)) {
-          safeMap.set(Class, instance);
-        }
       } else {
         instance = safeMap.get(ContainerItem);
 
