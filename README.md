@@ -383,3 +383,66 @@ Unstated isn't ambitious, use it as you need it, it's nice and small for
 that reason. Don't think of it as a "Redux killer". Don't go trying to
 build complex tools on top of it. Don't reinvent the wheel. Just try it
 out and see how you like it.
+
+#### Passing your own instances directly to `<Subscribe to>`
+
+If you want to use your own instance of a container directly to `<Subscribe>`
+and you don't care about dependency injection, you can do so:
+
+<!-- prettier-ignore -->
+```js
+let counter = new CounterContainer();
+
+function Counter() {
+  return (
+    <Subscribe to={[counter]}>
+      {counter => <div>...</div>}
+    </Subscribe>
+  );
+}
+```
+
+You just need to keep a couple things in mind:
+
+1. You are opting out of dependency injection, you won't be able to
+   `<Project inject>` another instance in your tests.
+2. Your instance will be local to whatever `<Subscribe>`'s you pass it to, you
+   will end up with multiple instances of your container if you don't pass the
+   same reference in everywhere.
+
+Also remember that it is _okay_ to use `<Provide inject>` in your application
+code, you can pass your instance in there. It's probably better to do that in
+most scenarios anyways (cause then you get dependency injection and all that
+good stuff).
+
+#### How can I pass in options to my container?
+
+A good pattern for doing this might be to add a constructor to your container
+which accepts `props` sorta like React components. Then create your own
+instance of your container and pass it into `<Provide inject>`.
+
+```js
+class CounterContainer {
+  constructor(props = {}) {
+    super();
+    this.state = {
+      amount: props.initialAmount || 1,
+      count: 0
+    };
+  }
+
+  increment = () => {
+    this.setState({ count: this.state.count + this.state.amount });
+  };
+}
+
+let counter = new CounterContainer({
+  initialAmount: 5
+});
+
+render(
+  <Provide inject={[counter]}>
+    <Counter />
+  </Provide>
+);
+```
