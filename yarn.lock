@@ -5134,6 +5134,10 @@ throat@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/throat/-/throat-4.1.0.tgz#89037cbc92c56ab18926e6ba4cbb200e15672a6a"
 
+tickedoff@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/tickedoff/-/tickedoff-1.0.1.tgz#277c463b5b275dc3c7e7473f8eef804254b9002d"
+
 timers-browserify@^2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/timers-browserify/-/timers-browserify-2.0.6.tgz#241e76927d9ca05f4d959819022f5b3664b64bae"

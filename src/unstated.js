@@ -2,23 +2,62 @@
 import React, { type Node } from 'react';
 import createReactContext from 'create-react-context';
 import PropTypes from 'prop-types';
+import defer from 'tickedoff';
+
+type Listener = (cb?: () => void) => void;
 
 const StateContext = createReactContext(null);
 
 export class Container<State: {}> {
   state: State;
-  _listeners: Array<() => mixed> = [];
+  _listeners: Array<Listener> = [];
 
-  setState(state: $Shape<State>) {
-    this.state = Object.assign({}, this.state, state);
-    this._listeners.forEach(fn => fn());
+  setState(
+    updater: $Shape<State> | ((prevState: $Shape<State>) => $Shape<State>),
+    callback?: () => void
+  ) {
+    defer(() => {
+      let nextState;
+
+      if (typeof updater === 'function') {
+        nextState = updater(this.state);
+      } else {
+        nextState = updater;
+      }
+
+      if (nextState == null) {
+        if (callback) callback();
+        return;
+      }
+
+      this.state = Object.assign({}, this.state, nextState);
+
+      let completed = 0;
+      let total = this._listeners.length;
+
+      this._listeners.forEach(fn => {
+        if (!callback) {
+          fn();
+          return;
+        }
+
+        let safeCallback = callback;
+
+        fn(() => {
+          completed++;
+          if (completed < total) {
+            safeCallback();
+          }
+        });
+      });
+    });
   }
 
-  subscribe(fn: () => mixed) {
+  subscribe(fn: Listener) {
     this._listeners.push(fn);
   }
 
-  unsubscribe(fn: () => mixed) {
+  unsubscribe(fn: Listener) {
     this._listeners = this._listeners.filter(f => f !== fn);
   }
 }
@@ -60,8 +99,8 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
     });
   }
 
-  onUpdate = () => {
-    this.setState(DUMMY_STATE);
+  onUpdate: Listener = cb => {
+    this.setState(DUMMY_STATE, cb);
   };
 
   _createInstances(

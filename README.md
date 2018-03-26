@@ -210,6 +210,54 @@ subscribe to for updates. When you call `setState` it triggers components to
 re-render, be careful not to mutate `this.state` directly or your components
 won't re-render.
 
+###### `setState()`
+
+`setState()` in `Container` mimics React's `setState()` method as closely as
+possible.
+
+```js
+class CounterContainer extends Container {
+  state = { count: 0 };
+  increment = () => {
+    this.setState(
+      state => {
+        return { count: state.count + 1 };
+      },
+      () => {
+        console.log('Updated!');
+      }
+    );
+  };
+}
+```
+
+It's also run asynchronously, so you need to follow the same rules as React.
+
+**Don't read state immediately after setting it**
+
+```js
+class CounterContainer extends Container {
+  state = { count: 0 };
+  increment = () => {
+    this.setState({ count: 1 });
+    console.log(this.state.count); // 0
+  };
+}
+```
+
+**If you are using previous state to calculate the next state, use the function form**
+
+```js
+class CounterContainer extends Container {
+  state = { count: 0 };
+  increment = () => {
+    this.setState(state => {
+      return { count: state.count + 1 };
+    });
+  };
+}
+```
+
 ##### `<Subscribe>`
 
 Next we'll need a piece to introduce our state back into the tree so that:
