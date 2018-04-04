@@ -422,7 +422,7 @@ which accepts `props` sorta like React components. Then create your own
 instance of your container and pass it into `<Provide inject>`.
 
 ```js
-class CounterContainer {
+class CounterContainer extends Container {
   constructor(props = {}) {
     super();
     this.state = {
