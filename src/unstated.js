@@ -9,8 +9,20 @@ export class Container<State: {}> {
   state: State;
   _listeners: Array<() => mixed> = [];
 
-  setState(state: $Shape<State>) {
-    this.state = Object.assign({}, this.state, state);
+  setState(state: $Shape<State> | (State => $Shape<State>)): void {
+    const prevState = this.state;
+    const newState = typeof state === 'function' ? state(prevState) : state;
+
+    /**
+     * allow either early return or ternary return of previous state to
+     * propagate correctly through component tree by not calling _listeners
+     * and leaving old state in place.
+     */
+    if (newState == null || newState === prevState) {
+      this.state = prevState;
+      return;
+    }
+    this.state = Object.assign({}, prevState, newState);
     this._listeners.forEach(fn => fn());
   }
 
