@@ -405,12 +405,12 @@ function Counter() {
 You just need to keep a couple things in mind:
 
 1. You are opting out of dependency injection, you won't be able to
-   `<Project inject>` another instance in your tests.
+   `<Provider inject>` another instance in your tests.
 2. Your instance will be local to whatever `<Subscribe>`'s you pass it to, you
    will end up with multiple instances of your container if you don't pass the
    same reference in everywhere.
 
-Also remember that it is _okay_ to use `<Provide inject>` in your application
+Also remember that it is _okay_ to use `<Provider inject>` in your application
 code, you can pass your instance in there. It's probably better to do that in
 most scenarios anyways (cause then you get dependency injection and all that
 good stuff).
