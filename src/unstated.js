@@ -12,6 +12,10 @@ export class Container<State: {}> {
   state: State;
   _listeners: Array<Listener> = [];
 
+  constructor() {
+    CONTAINER_DEBUG_CALLBACKS.forEach(cb => cb(this));
+  }
+
   setState(
     updater: $Shape<State> | ((prevState: $Shape<State>) => $Shape<State>),
     callback?: () => void
@@ -182,4 +186,14 @@ export function Provider(props: ProviderProps) {
       }}
     </StateContext.Consumer>
   );
+}
+
+let CONTAINER_DEBUG_CALLBACKS = [];
+
+// If you name isn't Sindre, this is not for you.
+// I might ruin your day suddenly if you depend on this without talking to me.
+export function __SUPER_SECRET_CONTAINER_DEBUG_HOOK__(
+  callback: (container: Container<any>) => mixed
+) {
+  CONTAINER_DEBUG_CALLBACKS.push(callback);
 }
