@@ -190,7 +190,7 @@ export function Provider(props: ProviderProps) {
 
 let CONTAINER_DEBUG_CALLBACKS = [];
 
-// If you name isn't Sindre, this is not for you.
+// If your name isn't Sindre, this is not for you.
 // I might ruin your day suddenly if you depend on this without talking to me.
 export function __SUPER_SECRET_CONTAINER_DEBUG_HOOK__(
   callback: (container: Container<any>) => mixed
