@@ -9,9 +9,10 @@ export class Container<State: {}> {
   state: State;
   _listeners: Array<() => mixed> = [];
 
-  setState(state: $Shape<State>) {
+  setState(state: $Shape<State>, callback?: () => void) {
     this.state = Object.assign({}, this.state, state);
     this._listeners.forEach(fn => fn());
+    if (callback) callback();
   }
 
   subscribe(fn: () => mixed) {
