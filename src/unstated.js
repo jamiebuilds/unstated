@@ -47,11 +47,16 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
     children: PropTypes.func.isRequired
   };
 
+  mounted = false;
   state = {};
   instances: Array<ContainerType> = [];
 
+  componentDidMount() {
+    this.mounted = true;
+  }
   componentWillUnmount() {
     this._unsubscribe();
+    this.mounted = false;
   }
 
   _unsubscribe() {
@@ -61,7 +66,9 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
   }
 
   onUpdate = () => {
-    this.setState(DUMMY_STATE);
+    if (this.mounted) {
+      this.setState(DUMMY_STATE);
+    }
   };
 
   _createInstances(
