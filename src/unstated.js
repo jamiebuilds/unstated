@@ -14,11 +14,11 @@ export class Container<State: {}> {
     this._listeners.forEach(fn => fn());
   }
 
-  subscribe(fn: Function) {
+  subscribe(fn: () => mixed) {
     this._listeners.push(fn);
   }
 
-  unsubscribe(fn: Function) {
+  unsubscribe(fn: () => mixed) {
     this._listeners = this._listeners.filter(f => f !== fn);
   }
 }
@@ -69,7 +69,7 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
     containers: ContainersType
   ): Array<ContainerType> {
     this._unsubscribe();
-                       
+
     if (map === null) {
       throw new Error(
         'You must wrap your <Subscribe> components with a <Provider>'
