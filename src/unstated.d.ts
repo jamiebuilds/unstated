@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export class Container<State extends object> {
   state: State;
-  setState(state: Partial<State>): void;
+  setState(state: Partial<State>, callback?: () => void): void;
   subscribe(fn: Function): void;
   unsubscribe(fn: Function): void;
 }
