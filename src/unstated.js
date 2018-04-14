@@ -2,7 +2,7 @@
 import React, { type Node } from 'react';
 import createReactContext from 'create-react-context';
 import PropTypes from 'prop-types';
-import defer from 'tickedoff';
+import tickedoff from 'tickedoff';
 
 type Listener = (cb?: () => void) => void;
 
@@ -20,7 +20,7 @@ export class Container<State: {}> {
     updater: $Shape<State> | ((prevState: $Shape<State>) => $Shape<State>),
     callback?: () => void
   ) {
-    defer(() => {
+    tickedoff(() => {
       let nextState;
 
       if (typeof updater === 'function') {
