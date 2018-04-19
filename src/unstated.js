@@ -49,7 +49,7 @@ export class Container<State: {}> {
 
         fn(() => {
           completed++;
-          if (completed < total) {
+          if (completed === total) {
             safeCallback();
           }
         });
