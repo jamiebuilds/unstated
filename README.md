@@ -494,3 +494,7 @@ render(
   </Provide>
 );
 ```
+
+## Contributing
+
+Some info about submitting pull requests/issues goes here...
