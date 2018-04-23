@@ -22,11 +22,9 @@
     "typescript": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "create-react-context": "^0.1.5",
-    "tickedoff": "^1.0.1"
+    "create-react-context": "^0.1.5"
   },
   "peerDependencies": {
-    "prop-types": "^15.5.0",
     "react": "^15.0.0 || ^16.0.0"
   },
   "devDependencies": {

@@ -3,11 +3,13 @@ import * as React from 'react';
 export class Container<State extends object> {
   state: State;
   setState<K extends keyof State>(
-    state: ((prevState: Readonly<State>) => (Partial<State> | State | null)) | (Partial<State> | State | null),
+    state:
+      | ((prevState: Readonly<State>) => Partial<State> | State | null)
+      | (Partial<State> | State | null),
     callback?: () => void
-  ): void;
-  subscribe(fn: Function): void;
-  unsubscribe(fn: Function): void;
+  ): Promise<void>;
+  subscribe(fn: () => any): void;
+  unsubscribe(fn: () => any): void;
 }
 
 export interface ContainerType<State extends object> {

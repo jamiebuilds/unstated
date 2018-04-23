@@ -1,10 +1,8 @@
 // @flow
 import React, { type Node } from 'react';
 import createReactContext from 'create-react-context';
-import PropTypes from 'prop-types';
-import defer from 'tickedoff';
 
-type Listener = (cb?: () => void) => void;
+type Listener = () => mixed;
 
 const StateContext = createReactContext(null);
 
@@ -19,8 +17,8 @@ export class Container<State: {}> {
   setState(
     updater: $Shape<State> | ((prevState: $Shape<State>) => $Shape<State>),
     callback?: () => void
-  ) {
-    defer(() => {
+  ): Promise<void> {
+    return Promise.resolve().then(() => {
       let nextState;
 
       if (typeof updater === 'function') {
@@ -36,23 +34,12 @@ export class Container<State: {}> {
 
       this.state = Object.assign({}, this.state, nextState);
 
-      let completed = 0;
-      let total = this._listeners.length;
+      let promises = this._listeners.map(listener => listener());
 
-      this._listeners.forEach(fn => {
-        if (!callback) {
-          fn();
-          return;
+      return Promise.all(promises).then(() => {
+        if (callback) {
+          return callback();
         }
-
-        let safeCallback = callback;
-
-        fn(() => {
-          completed++;
-          if (completed < total) {
-            safeCallback();
-          }
-        });
       });
     });
   }
@@ -85,11 +72,6 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
   SubscribeProps<Containers>,
   SubscribeState
 > {
-  static propTypes = {
-    to: PropTypes.array.isRequired,
-    children: PropTypes.func.isRequired
-  };
-
   state = {};
   instances: Array<ContainerType> = [];
 
@@ -103,8 +85,10 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
     });
   }
 
-  onUpdate: Listener = cb => {
-    this.setState(DUMMY_STATE, cb);
+  onUpdate: Listener = () => {
+    return new Promise(resolve => {
+      this.setState(DUMMY_STATE, resolve);
+    });
   };
 
   _createInstances(
