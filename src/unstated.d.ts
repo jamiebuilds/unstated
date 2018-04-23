@@ -2,7 +2,10 @@ import * as React from 'react';
 
 export class Container<State extends object> {
   state: State;
-  setState(state: Partial<State>): void;
+  setState<K extends keyof State>(
+    state: ((prevState: Readonly<State>) => (Partial<State> | State | null)) | (Partial<State> | State | null),
+    callback?: () => void
+  ): void;
   subscribe(fn: Function): void;
   unsubscribe(fn: Function): void;
 }
