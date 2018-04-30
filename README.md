@@ -494,3 +494,7 @@ render(
   </Provide>
 );
 ```
+
+## Contributing
+
+Issues are closed on this repo, but PRs are welcome. Search PRs to see if your bug has been fixed.
