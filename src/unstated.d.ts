@@ -11,7 +11,7 @@ export class Container<State extends object> {
 }
 
 export interface ContainerType<State extends object> {
-  new (): Container<State>;
+  new (...args: any[]): Container<State>;
 }
 
 interface SubscribeProps {
