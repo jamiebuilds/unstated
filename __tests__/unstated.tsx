@@ -69,7 +69,7 @@ function CounterWithAmountApp() {
   );
 }
 
-const sharedAmountContainer = new AmountContainer();
+const sharedAmountContainer = new AmounterContainer();
 
 function CounterWithSharedAmountApp() {
   return (
