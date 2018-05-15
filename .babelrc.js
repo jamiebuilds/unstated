@@ -18,7 +18,7 @@ module.exports = {
   ],
   plugins: [
     'transform-class-properties',
-    'babel-plugin-transform-object-assign',
+    'transform-object-assign',
     cjs && 'transform-es2015-modules-commonjs'
   ].filter(Boolean)
 };
