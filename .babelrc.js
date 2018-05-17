@@ -18,6 +18,7 @@ module.exports = {
   ],
   plugins: [
     'transform-class-properties',
+    'transform-object-assign',
     cjs && 'transform-es2015-modules-commonjs'
   ].filter(Boolean)
 };
