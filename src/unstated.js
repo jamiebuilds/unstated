@@ -74,8 +74,10 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
 > {
   state = {};
   instances: Array<ContainerType> = [];
+  unmounted = false;
 
   componentWillUnmount() {
+    this.unmounted = true;
     this._unsubscribe();
   }
 
@@ -87,7 +89,9 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
 
   onUpdate: Listener = () => {
     return new Promise(resolve => {
-      this.setState(DUMMY_STATE, resolve);
+      if (!this.unmounted) {
+        this.setState(DUMMY_STATE, resolve);
+      }
     });
   };
 
