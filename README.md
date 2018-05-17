@@ -258,6 +258,23 @@ class CounterContainer extends Container {
 }
 ```
 
+However, unlike React's `setState()` Unstated's `setState()` returns a promise,
+so you can `await` it like this:
+
+```js
+class CounterContainer extends Container {
+  state = { count: 0 };
+  increment = async () => {
+    await this.setState({ count: 1 });
+    console.log(this.state.count); // 1
+  };
+}
+```
+
+Async functions are now available in [all the major browsers](https://caniuse.com/#feat=async-functions),
+but you can also use [Babel](http://babeljs.io) to compile them down to
+something that works in every browser.
+
 ##### `<Subscribe>`
 
 Next we'll need a piece to introduce our state back into the tree so that:
@@ -324,14 +341,14 @@ Well because our containers are very simple classes, we can construct them in
 tests and assert different things about them very easily.
 
 ```js
-test('counter', () => {
+test('counter', async () => {
   let counter = new CounterContainer();
   assert(counter.state.count === 0);
 
-  counter.increment();
+  await counter.increment();
   assert(counter.state.count === 1);
 
-  counter.decrement();
+  await counter.decrement();
   assert(counter.state.count === 0);
 });
 ```
@@ -348,10 +365,10 @@ test('counter', () => {
     </Provider>
   );
 
-  click(tree, '#increment');
+  await click(tree, '#increment');
   assert(counter.state.count === 1);
 
-  click(tree, '#decrement');
+  await click(tree, '#decrement');
   assert(counter.state.count === 0);
 });
 ```
@@ -371,7 +388,7 @@ test('counter', () => {
     </Provider>
   );
 
-  click(tree, '#increment');
+  await click(tree, '#increment');
   assert(inc.calls.length === 1);
   assert(dec.calls.length === 0);
 });

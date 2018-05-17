@@ -13,7 +13,7 @@ class CounterContainer extends Container<{ count: number }> {
 
 class AmounterContainer extends Container<{ amount: number }> {
   state = { amount: 1 };
-  setAmount(amount) {
+  setAmount(amount: number) {
     this.setState({ amount });
   }
 }
