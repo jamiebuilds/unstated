@@ -318,21 +318,28 @@ render(
 Whenever we consider the way that we write the state in our apps we should be
 thinking about testing.
 
-We want to make sure that our state containers have a clean way
-
 Well because our containers are very simple classes, we can construct them in
 tests and assert different things about them very easily.
 
+Note the use of the `tickedoff` library to defer our tests one tick and give
+state a chance to update after calling increment/decrement.
+
 ```js
-test('counter', () => {
+import defer from 'tickedoff';
+
+test('counter', (done) => {
   let counter = new CounterContainer();
   assert(counter.state.count === 0);
 
   counter.increment();
-  assert(counter.state.count === 1);
-
-  counter.decrement();
-  assert(counter.state.count === 0);
+  defer(() => {
+    assert(counter.state.count === 1);
+    counter.decrement();
+    defer(() => {
+      assert(counter.state.count === 0);
+      done();
+    });
+  });
 });
 ```
 
@@ -340,7 +347,9 @@ If we want to test the relationship between our container and the component
 we can again construct our own instance and inject it into the tree.
 
 ```js
-test('counter', () => {
+import defer from 'tickedoff';
+
+test('counter', (done) => {
   let counter = new CounterContainer();
   let tree = render(
     <Provider inject={[counter]}>
@@ -349,10 +358,15 @@ test('counter', () => {
   );
 
   click(tree, '#increment');
-  assert(counter.state.count === 1);
-
-  click(tree, '#decrement');
-  assert(counter.state.count === 0);
+  defer(() => {
+    assert(counter.state.count === 1);
+    
+    click(tree, '#decrement');
+    defer(() => {
+      assert(counter.state.count === 0);
+      done();
+    });
+  });
 });
 ```
 
