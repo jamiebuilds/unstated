@@ -511,3 +511,54 @@ render(
   </Provide>
 );
 ```
+
+#### Advanced use cases:
+
+To avoid repeatative code throughout your app, you may find it useful to store your React Subscription and Provider calls in class static methods. 
+
+```js
+//UserClass.js
+
+class User extends React.Component {
+  constructor(user) {
+    super();
+    this.state = {
+      user
+    };
+  }
+  static getUser = () => LocalStorage.getItem("user");
+  static removeUser = () => LocalStorage.removeItem("user");
+  static Initialize = ({children}) => (
+    <Provide inject={[new User(User.getUser())]}>
+      {children}
+    </Provide>
+  );
+  static Connect = ({children}) => (
+    <Subscribe to ={[User]}>
+      {children}
+    </Subscribe>
+  );
+}
+```
+
+This lets us consolidate Unstated logic to just State components and never repeat our code! We only need to import the relevant class and perform its actions:
+
+```js
+//App.js
+export default () => (
+    <User.Initialize>
+      <Routes />;
+    </User.Initialize>
+);
+
+//ProtectedRoute.jsx
+
+export default ({ mainUserPage, ...rest }) => (
+  <User.Connect>
+    {({ state: { user } }) =>
+      user ? <Redirect to={mainUserPage} /> : <Route {...rest} />
+    }
+  </User.Connect>
+);
+```
+
