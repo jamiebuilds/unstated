@@ -91,6 +91,8 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
     return new Promise(resolve => {
       if (!this.unmounted) {
         this.setState(DUMMY_STATE, resolve);
+      } else {
+        resolve();
       }
     });
   };
