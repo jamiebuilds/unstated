@@ -484,7 +484,7 @@ good stuff).
 
 A good pattern for doing this might be to add a constructor to your container
 which accepts `props` sorta like React components. Then create your own
-instance of your container and pass it into `<Provide inject>`.
+instance of your container and pass it into `<Provider inject>`.
 
 ```js
 class CounterContainer extends Container {
@@ -506,8 +506,8 @@ let counter = new CounterContainer({
 });
 
 render(
-  <Provide inject={[counter]}>
+  <Provider inject={[counter]}>
     <Counter />
-  </Provide>
+  </Provider>
 );
 ```
