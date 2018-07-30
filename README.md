@@ -27,9 +27,9 @@ type CounterState = {
 };
 
 class CounterContainer extends Container<CounterState> {
-  state = {
-    count: 0
-  };
+  super(initialCount) {
+    this.state = {count: initialCount};
+  }
 
   increment() {
     this.setState({ count: this.state.count + 1 });
@@ -55,7 +55,7 @@ function Counter() {
 }
 
 render(
-  <Provider>
+  <Provider inject={[new CounterContainer(0)]}>
     <Counter />
   </Provider>,
   document.getElementById('root')
