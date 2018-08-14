@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider, Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Carrier } from '../src/unstated';
 
 type CounterState = {
   count: number
 };
 
-class CounterContainer extends Container<CounterState> {
+class CounterCarrier extends Carrier<CounterState> {
   state = { count: 0 };
 
   increment() {
@@ -21,7 +21,7 @@ class CounterContainer extends Container<CounterState> {
 
 function Counter() {
   return (
-    <Subscribe to={[CounterContainer]}>
+    <Subscribe to={[CounterCarrier]}>
       {counter => (
         <div>
           <button onClick={() => counter.decrement()}>-</button>

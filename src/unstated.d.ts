@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export class Container<State extends object> {
+export class Carrier<State extends object> {
   state: State;
   setState<K extends keyof State>(
     state:
@@ -12,19 +12,19 @@ export class Container<State extends object> {
   unsubscribe(fn: () => any): void;
 }
 
-export interface ContainerType<State extends object> {
-  new (...args: any[]): Container<State>;
+export interface CarrierType<State extends object> {
+  new (...args: any[]): Carrier<State>;
 }
 
 interface SubscribeProps {
-  to: (ContainerType<any> | Container<any>)[];
-  children(...instances: Container<any>[]): React.ReactNode;
+  to: (CarrierType<any> | Carrier<any>)[];
+  children(...instances: Carrier<any>[]): React.ReactNode;
 }
 
 export class Subscribe extends React.Component<SubscribeProps> {}
 
 export interface ProviderProps {
-  inject?: Container<any>[];
+  inject?: Carrier<any>[];
   children: React.ReactNode;
 }
 

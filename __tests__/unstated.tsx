@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Provider, Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Carrier } from '../src/unstated';
 
-class CounterContainer extends Container<{ count: number }> {
+class CounterCarrier extends Carrier<{ count: number }> {
   state = { count: 0 };
   increment(amount = 1) {
     this.setState({ count: this.state.count + amount });
@@ -11,7 +11,7 @@ class CounterContainer extends Container<{ count: number }> {
   }
 }
 
-class AmounterContainer extends Container<{ amount: number }> {
+class AmounterCarrier extends Carrier<{ amount: number }> {
   state = { amount: 1 };
   setAmount(amount: number) {
     this.setState({ amount });
@@ -20,8 +20,8 @@ class AmounterContainer extends Container<{ amount: number }> {
 
 function Counter() {
   return (
-    <Subscribe to={[CounterContainer]}>
-      {(counter: CounterContainer) => (
+    <Subscribe to={[CounterCarrier]}>
+      {(counter: CounterCarrier) => (
         <div>
           <span>{counter.state.count}</span>
           <button onClick={() => counter.decrement()}>-</button>
@@ -34,8 +34,8 @@ function Counter() {
 
 function CounterWithAmount() {
   return (
-    <Subscribe to={[CounterContainer, AmounterContainer]}>
-      {(counter: CounterContainer, amounter: AmounterContainer) => (
+    <Subscribe to={[CounterCarrier, AmounterCarrier]}>
+      {(counter: CounterCarrier, amounter: AmounterCarrier) => (
         <div>
           <span>{counter.state.count}</span>
           <button onClick={() => counter.decrement(amounter.state.amount)}>
@@ -52,8 +52,8 @@ function CounterWithAmount() {
 
 function CounterWithAmountApp() {
   return (
-    <Subscribe to={[AmounterContainer]}>
-      {(amounter: AmounterContainer) => (
+    <Subscribe to={[AmounterCarrier]}>
+      {(amounter: AmounterCarrier) => (
         <div>
           <Counter />
           <input
@@ -69,12 +69,12 @@ function CounterWithAmountApp() {
   );
 }
 
-const sharedAmountContainer = new AmounterContainer();
+const sharedAmountCarrier = new AmounterCarrier();
 
 function CounterWithSharedAmountApp() {
   return (
-    <Subscribe to={[sharedAmountContainer]}>
-      {(amounter: AmounterContainer) => (
+    <Subscribe to={[sharedAmountCarrier]}>
+      {(amounter: AmounterCarrier) => (
         <div>
           <Counter />
           <input
@@ -90,7 +90,7 @@ function CounterWithSharedAmountApp() {
   );
 }
 
-let counter = new CounterContainer();
+let counter = new CounterCarrier();
 let render = () => (
   <Provider inject={[counter]}>
     <Counter />
