@@ -20,13 +20,13 @@ yarn add unstated
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider, Subscribe, Container } from 'unstated';
+import { Provider, Subscribe, Carrier } from 'unstated';
 
 type CounterState = {
   count: number
 };
 
-class CounterContainer extends Container<CounterState> {
+class CounterCarrier extends Carrier<CounterState> {
   state = {
     count: 0
   };
@@ -42,7 +42,7 @@ class CounterContainer extends Container<CounterState> {
 
 function Counter() {
   return (
-    <Subscribe to={[CounterContainer]}>
+    <Subscribe to={[CounterCarrier]}>
       {counter => (
         <div>
           <button onClick={() => counter.decrement()}>-</button>
@@ -184,17 +184,17 @@ components and context.
 
 It has three pieces:
 
-##### `Container`
+##### `Carrier`
 
 We're going to want another place to store our state and some of the logic for
 updating it.
 
-`Container` is a very simple class which is meant to look just like
+`Carrier` is a very simple class which is meant to look just like
 `React.Component` but with only the state-related bits: `this.state` and
 `this.setState`.
 
 ```js
-class CounterContainer extends Container {
+class CounterCarrier extends Carrier {
   state = { count: 0 };
   increment = () => {
     this.setState({ count: this.state.count + 1 });
@@ -205,18 +205,18 @@ class CounterContainer extends Container {
 }
 ```
 
-Behind the scenes our `Container`s are also event emitters that our app can
+Behind the scenes our `Carrier`s are also event emitters that our app can
 subscribe to for updates. When you call `setState` it triggers components to
 re-render, be careful not to mutate `this.state` directly or your components
 won't re-render.
 
 ###### `setState()`
 
-`setState()` in `Container` mimics React's `setState()` method as closely as
+`setState()` in `Carrier` mimics React's `setState()` method as closely as
 possible.
 
 ```js
-class CounterContainer extends Container {
+class CounterCarrier extends Carrier {
   state = { count: 0 };
   increment = () => {
     this.setState(
@@ -236,7 +236,7 @@ It's also run asynchronously, so you need to follow the same rules as React.
 **Don't read state immediately after setting it**
 
 ```js
-class CounterContainer extends Container {
+class CounterCarrier extends Carrier {
   state = { count: 0 };
   increment = () => {
     this.setState({ count: 1 });
@@ -248,7 +248,7 @@ class CounterContainer extends Container {
 **If you are using previous state to calculate the next state, use the function form**
 
 ```js
-class CounterContainer extends Container {
+class CounterCarrier extends Carrier {
   state = { count: 0 };
   increment = () => {
     this.setState(state => {
@@ -262,7 +262,7 @@ However, unlike React's `setState()` Unstated's `setState()` returns a promise,
 so you can `await` it like this:
 
 ```js
-class CounterContainer extends Container {
+class CounterCarrier extends Carrier {
   state = { count: 0 };
   increment = async () => {
     await this.setState({ count: 1 });
@@ -280,16 +280,16 @@ something that works in every browser.
 Next we'll need a piece to introduce our state back into the tree so that:
 
 * When state changes, our components re-render.
-* We can depend on our container's state.
-* We can call methods on our container.
+* We can depend on our Carrier's state.
+* We can call methods on our Carrier.
 
 For this we have the `<Subscribe>` component which allows us to pass our
-container classes/instances and receive instances of them in the tree.
+Carrier classes/instances and receive instances of them in the tree.
 
 ```js
 function Counter() {
   return (
-    <Subscribe to={[CounterContainer]}>
+    <Subscribe to={[CounterCarrier]}>
       {counter => (
         <div>
           <span>{counter.state.count}</span>
@@ -302,7 +302,7 @@ function Counter() {
 }
 ```
 
-`<Subscribe>` will automatically construct our container and listen for changes.
+`<Subscribe>` will automatically construct our Carrier and listen for changes.
 
 ##### `<Provider>`
 
@@ -321,7 +321,7 @@ We can do some interesting things with `<Provider>` as well like dependency
 injection:
 
 ```js
-let counter = new CounterContainer();
+let counter = new CounterCarrier();
 
 render(
   <Provider inject={[counter]}>
@@ -335,14 +335,14 @@ render(
 Whenever we consider the way that we write the state in our apps we should be
 thinking about testing.
 
-We want to make sure that our state containers have a clean way
+We want to make sure that our state Carriers have a clean way
 
-Well because our containers are very simple classes, we can construct them in
+Well because our Carriers are very simple classes, we can construct them in
 tests and assert different things about them very easily.
 
 ```js
 test('counter', async () => {
-  let counter = new CounterContainer();
+  let counter = new CounterCarrier();
   assert(counter.state.count === 0);
 
   await counter.increment();
@@ -353,12 +353,12 @@ test('counter', async () => {
 });
 ```
 
-If we want to test the relationship between our container and the component
+If we want to test the relationship between our Carrier and the component
 we can again construct our own instance and inject it into the tree.
 
 ```js
 test('counter', () => {
-  let counter = new CounterContainer();
+  let counter = new CounterCarrier();
   let tree = render(
     <Provider inject={[counter]}>
       <Counter />
@@ -374,11 +374,11 @@ test('counter', () => {
 ```
 
 Dependency injection is useful in many ways. Like if we wanted to stub out a
-method in our state container we can do that painlessly.
+method in our state Carrier we can do that painlessly.
 
 ```js
 test('counter', () => {
-  let counter = new CounterContainer();
+  let counter = new CounterCarrier();
   let inc = stub(counter, 'increment');
   let dec = stub(counter, 'decrement');
 
@@ -451,12 +451,12 @@ out and see how you like it.
 
 #### Passing your own instances directly to `<Subscribe to>`
 
-If you want to use your own instance of a container directly to `<Subscribe>`
+If you want to use your own instance of a Carrier directly to `<Subscribe>`
 and you don't care about dependency injection, you can do so:
 
 <!-- prettier-ignore -->
 ```js
-let counter = new CounterContainer();
+let counter = new CounterCarrier();
 
 function Counter() {
   return (
@@ -472,7 +472,7 @@ You just need to keep a couple things in mind:
 1. You are opting out of dependency injection, you won't be able to
    `<Provider inject>` another instance in your tests.
 2. Your instance will be local to whatever `<Subscribe>`'s you pass it to, you
-   will end up with multiple instances of your container if you don't pass the
+   will end up with multiple instances of your Carrier if you don't pass the
    same reference in everywhere.
 
 Also remember that it is _okay_ to use `<Provider inject>` in your application
@@ -480,14 +480,14 @@ code, you can pass your instance in there. It's probably better to do that in
 most scenarios anyways (cause then you get dependency injection and all that
 good stuff).
 
-#### How can I pass in options to my container?
+#### How can I pass in options to my Carrier?
 
-A good pattern for doing this might be to add a constructor to your container
+A good pattern for doing this might be to add a constructor to your Carrier
 which accepts `props` sorta like React components. Then create your own
-instance of your container and pass it into `<Provide inject>`.
+instance of your Carrier and pass it into `<Provide inject>`.
 
 ```js
-class CounterContainer extends Container {
+class CounterCarrier extends Carrier {
   constructor(props = {}) {
     super();
     this.state = {
@@ -501,7 +501,7 @@ class CounterContainer extends Container {
   };
 }
 
-let counter = new CounterContainer({
+let counter = new CounterCarrier({
   initialAmount: 5
 });
 

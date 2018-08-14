@@ -6,12 +6,12 @@ type Listener = () => mixed;
 
 const StateContext = createReactContext(null);
 
-export class Container<State: {}> {
+export class Carrier<State: {}> {
   state: State;
   _listeners: Array<Listener> = [];
 
   constructor() {
-    CONTAINER_DEBUG_CALLBACKS.forEach(cb => cb(this));
+    Carrier_DEBUG_CALLBACKS.forEach(cb => cb(this));
   }
 
   setState(
@@ -53,14 +53,14 @@ export class Container<State: {}> {
   }
 }
 
-export type ContainerType = Container<Object>;
-export type ContainersType = Array<Class<ContainerType> | ContainerType>;
-export type ContainerMapType = Map<Class<ContainerType>, ContainerType>;
+export type CarrierType = Carrier<Object>;
+export type CarriersType = Array<Class<CarrierType> | CarrierType>;
+export type CarrierMapType = Map<Class<CarrierType>, CarrierType>;
 
-export type SubscribeProps<Containers: ContainersType> = {
-  to: Containers,
+export type SubscribeProps<Carriers: CarriersType> = {
+  to: Carriers,
   children: (
-    ...instances: $TupleMap<Containers, <C>(Class<C> | C) => C>
+    ...instances: $TupleMap<Carriers, <C>(Class<C> | C) => C>
   ) => Node
 };
 
@@ -68,12 +68,12 @@ type SubscribeState = {};
 
 const DUMMY_STATE = {};
 
-export class Subscribe<Containers: ContainersType> extends React.Component<
-  SubscribeProps<Containers>,
+export class Subscribe<Carriers: CarriersType> extends React.Component<
+  SubscribeProps<Carriers>,
   SubscribeState
 > {
   state = {};
-  instances: Array<ContainerType> = [];
+  instances: Array<CarrierType> = [];
   unmounted = false;
 
   componentWillUnmount() {
@@ -82,8 +82,8 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
   }
 
   _unsubscribe() {
-    this.instances.forEach(container => {
-      container.unsubscribe(this.onUpdate);
+    this.instances.forEach(Carrier => {
+      Carrier.unsubscribe(this.onUpdate);
     });
   }
 
@@ -98,9 +98,9 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
   };
 
   _createInstances(
-    map: ContainerMapType | null,
-    containers: ContainersType
-  ): Array<ContainerType> {
+    map: CarrierMapType | null,
+    Carriers: CarriersType
+  ): Array<CarrierType> {
     this._unsubscribe();
 
     if (map === null) {
@@ -110,20 +110,20 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
     }
 
     let safeMap = map;
-    let instances = containers.map(ContainerItem => {
+    let instances = Carriers.map(CarrierItem => {
       let instance;
 
       if (
-        typeof ContainerItem === 'object' &&
-        ContainerItem instanceof Container
+        typeof CarrierItem === 'object' &&
+        CarrierItem instanceof Carrier
       ) {
-        instance = ContainerItem;
+        instance = CarrierItem;
       } else {
-        instance = safeMap.get(ContainerItem);
+        instance = safeMap.get(CarrierItem);
 
         if (!instance) {
-          instance = new ContainerItem();
-          safeMap.set(ContainerItem, instance);
+          instance = new CarrierItem();
+          safeMap.set(CarrierItem, instance);
         }
       }
 
@@ -152,7 +152,7 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
 }
 
 export type ProviderProps = {
-  inject?: Array<ContainerType>,
+  inject?: Array<CarrierType>,
   children: Node
 };
 
@@ -178,12 +178,12 @@ export function Provider(props: ProviderProps) {
   );
 }
 
-let CONTAINER_DEBUG_CALLBACKS = [];
+let Carrier_DEBUG_CALLBACKS = [];
 
 // If your name isn't Sindre, this is not for you.
 // I might ruin your day suddenly if you depend on this without talking to me.
-export function __SUPER_SECRET_CONTAINER_DEBUG_HOOK__(
-  callback: (container: Container<any>) => mixed
+export function __SUPER_SECRET_Carrier_DEBUG_HOOK__(
+  callback: (Carrier: Carrier<any>) => mixed
 ) {
-  CONTAINER_DEBUG_CALLBACKS.push(callback);
+  Carrier_DEBUG_CALLBACKS.push(callback);
 }

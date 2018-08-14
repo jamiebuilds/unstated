@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { Provider, Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Carrier } from '../src/unstated';
 
 function render(element) {
   return renderer.create(element).toJSON();
 }
 
-class CounterContainer extends Container<{ count: number }> {
+class CounterCarrier extends Carrier<{ count: number }> {
   state = { count: 0 };
   increment(amount = 1) {
     this.setState({ count: this.state.count + amount });
@@ -17,7 +17,7 @@ class CounterContainer extends Container<{ count: number }> {
   }
 }
 
-class AmounterContainer extends Container<{ amount: number }> {
+class AmounterCarrier extends Carrier<{ amount: number }> {
   state = { amount: 1 };
   setAmount(amount) {
     this.setState({ amount });
@@ -26,7 +26,7 @@ class AmounterContainer extends Container<{ amount: number }> {
 
 function Counter() {
   return (
-    <Subscribe to={[CounterContainer]}>
+    <Subscribe to={[CounterCarrier]}>
       {counter => (
         <div>
           <span>{counter.state.count}</span>
@@ -40,7 +40,7 @@ function Counter() {
 
 function CounterWithAmount() {
   return (
-    <Subscribe to={[CounterContainer, AmounterContainer]}>
+    <Subscribe to={[CounterCarrier, AmounterCarrier]}>
       {(counter, amounter) => (
         <div>
           <span>{counter.state.count}</span>
@@ -58,7 +58,7 @@ function CounterWithAmount() {
 
 function CounterWithAmountApp() {
   return (
-    <Subscribe to={[AmounterContainer]}>
+    <Subscribe to={[AmounterCarrier]}>
       {amounter => (
         <div>
           <Counter />

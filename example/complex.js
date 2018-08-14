@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider, Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Carrier } from '../src/unstated';
 
 type AppState = {
   amount: number
 };
 
-class AppContainer extends Container<AppState> {
+class AppCarrier extends Carrier<AppState> {
   state = {
     amount: 1
   };
@@ -21,7 +21,7 @@ type CounterState = {
   count: number
 };
 
-class CounterContainer extends Container<CounterState> {
+class CounterCarrier extends Carrier<CounterState> {
   state = {
     count: 0
   };
@@ -37,7 +37,7 @@ class CounterContainer extends Container<CounterState> {
 
 function Counter() {
   return (
-    <Subscribe to={[AppContainer, CounterContainer]}>
+    <Subscribe to={[AppCarrier, CounterCarrier]}>
       {(app, counter) => (
         <div>
           <span>Count: {counter.state.count}</span>
@@ -51,7 +51,7 @@ function Counter() {
 
 function App() {
   return (
-    <Subscribe to={[AppContainer]}>
+    <Subscribe to={[AppCarrier]}>
       {app => (
         <div>
           <Counter />
