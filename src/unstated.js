@@ -76,9 +76,20 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
   instances: Array<ContainerType> = [];
   unmounted = false;
 
+  componentDidMount() {
+    this._subscribe();
+  }
+
   componentWillUnmount() {
     this.unmounted = true;
     this._unsubscribe();
+  }
+
+  _subscribe() {
+    this.instances.forEach(container => {
+      container.unsubscribe(this.onUpdate);
+      container.subscribe(this.onUpdate);
+    });
   }
 
   _unsubscribe() {
@@ -126,9 +137,6 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
           safeMap.set(ContainerItem, instance);
         }
       }
-
-      instance.unsubscribe(this.onUpdate);
-      instance.subscribe(this.onUpdate);
 
       return instance;
     });
