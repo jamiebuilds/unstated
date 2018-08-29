@@ -64,7 +64,7 @@ export type SubscribeProps<Containers: ContainersType> = {
   ) => Node
 };
 
-type SubscribeUpdaterProps = {
+type SubscribeUpdaterProps<Containers: ContainersType> = {
   instances: Array<ContainerType>,
   children: (
     ...instances: $TupleMap<Containers, <C>(Class<C> | C) => C>
@@ -75,7 +75,7 @@ type SubscribeUpdaterState = {};
 const DUMMY_STATE = {};
 
 class SubscribeUpdater<Containers: ContainersType> extends React.Component<
-  SubscribeUpdaterProps,
+  SubscribeUpdaterProps<Containers>,
   SubscribeUpdaterState
 > {
   state = {};
@@ -90,7 +90,7 @@ class SubscribeUpdater<Containers: ContainersType> extends React.Component<
     this._unsubscribe(this.props.instances);
   }
 
-  componentDidUpdate(prevProps: SubscribeUpdaterProps) {
+  componentDidUpdate(prevProps: SubscribeUpdaterProps<Containers>) {
     this._unsubscribe(prevProps.instances);
     this._subscribe(this.props.instances);
   }
