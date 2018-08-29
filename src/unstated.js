@@ -75,7 +75,7 @@ type SubscribeUpdaterState = {};
 const DUMMY_STATE = {};
 
 class SubscribeUpdater<Containers: ContainersType> extends React.Component<
-  SubscribeUpdaterPropsf,
+  SubscribeUpdaterProps,
   SubscribeUpdaterState
 > {
   state = {};
@@ -90,20 +90,20 @@ class SubscribeUpdater<Containers: ContainersType> extends React.Component<
     this._unsubscribe(this.props.instances);
   }
 
-  componentDidUpdate(prevProps: *) {
+  componentDidUpdate(prevProps: SubscribeUpdaterProps) {
     this._unsubscribe(prevProps.instances);
     this._subscribe(this.props.instances);
   }
 
   _subscribe(instances: Array<ContainerType>) {
-    this.instances.forEach(container => {
+    instances.forEach(container => {
       container.unsubscribe(this.onUpdate);
       container.subscribe(this.onUpdate);
     });
   }
 
   _unsubscribe(instances: Array<ContainerType>) {
-    this.instances.forEach(container => {
+    instances.forEach(container => {
       container.unsubscribe(this.onUpdate);
     });
   }
