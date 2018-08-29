@@ -112,8 +112,6 @@ export class Subscribe<Containers: ContainersType> extends React.Component<
     map: ContainerMapType | null,
     containers: ContainersType
   ): Array<ContainerType> {
-    this._unsubscribe();
-
     if (map === null) {
       throw new Error(
         'You must wrap your <Subscribe> components with a <Provider>'
