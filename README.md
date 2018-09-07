@@ -166,7 +166,7 @@ class AmountAdjuster extends React.Component {
 render(
   <AmountAdjuster>
     <Counter/>
-  </AmountAdjuser>
+  </AmountAdjuster>
 );
 ```
 
