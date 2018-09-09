@@ -28,7 +28,7 @@ function Counter() {
         <div>
           <button onClick={() => counter.decrement()}>-</button>
           <span>{counter.state.count}</span>
-          <button onClick={() => sharedCounterContainer.increment()}>+</button>
+          <button onClick={() => counter.increment()}>+</button>
         </div>
       )}
     </Subscribe>
