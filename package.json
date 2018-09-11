@@ -7,7 +7,7 @@
   "types": "lib/unstated.d.ts",
   "repository": "https://github.com/thejameskyle/unstated",
   "author": "James Kyle <me@thejameskyle.com>",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "files": ["lib"],
   "scripts": {
     "clean": "rm -rf lib",
