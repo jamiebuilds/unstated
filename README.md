@@ -27,9 +27,9 @@ type CounterState = {
 };
 
 class CounterContainer extends Container<CounterState> {
-  super(initialCount) {
-    this.state = {count: initialCount};
-  }
+  state = {
+    count: 0
+  };
 
   increment() {
     this.setState({ count: this.state.count + 1 });
