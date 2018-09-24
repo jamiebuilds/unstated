@@ -55,7 +55,7 @@ function Counter() {
 }
 
 render(
-  <Provider>
+  <Provider inject={[new CounterContainer(0)]}>
     <Counter />
   </Provider>,
   document.getElementById('root')
