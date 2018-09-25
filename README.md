@@ -81,10 +81,11 @@ For more examples, see the `example/` directory.
 ## Guide
 
 If you're like me, you're sick of all the ceremony around state management in
-React. Something that fits in well with the React way of thinking, but doesn't
-command some crazy architecture and methodology.
+React, you want something that fits in well with the React way of thinking,
+but doesn't command some crazy architecture and methodology.
 
-Component state is nice! It makes sense and people pick it up quickly:
+So first off: Component state is nice! It makes sense and people can pick it
+up quickly:
 
 ```js
 class Counter extends React.Component {
