@@ -188,8 +188,8 @@ export function __SUPER_SECRET_CONTAINER_DEBUG_HOOK__(
   CONTAINER_DEBUG_CALLBACKS.push(callback);
 }
 
-export function Connect(subscribeTo = []) {
-  return Component => props => (
+export function Connect(subscribeTo: ContainersType) {
+  return Component: Object => props: Object => (
     <Subscribe to={subscribeTo}>
       {(...containers) => {
         // Transform containers array into object
