@@ -187,3 +187,21 @@ export function __SUPER_SECRET_CONTAINER_DEBUG_HOOK__(
 ) {
   CONTAINER_DEBUG_CALLBACKS.push(callback);
 }
+
+export function Connect(subscribeTo: ContainersType) {
+  return Component: Object => props: Object => (
+    <Subscribe to={subscribeTo}>
+      {(...containers) => {
+        // Transform containers array into object
+        // The class name will be the key of each container
+        let mapContainersToProps = containers.reduce(
+          (acc, cur) => ((acc[cur.constructor.name] = cur), acc),
+          {}
+        );
+
+        // Pass containers as props
+        return <Component {...mapContainersToProps} {...props} />;
+      }}
+    </Subscribe>
+  );
+}
