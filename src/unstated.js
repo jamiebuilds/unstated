@@ -4,22 +4,72 @@ import createReactContext from 'create-react-context';
 
 type Listener = () => mixed;
 
+let COUNTER = 0;
 const StateContext = createReactContext(null);
+
+if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
+  console.log(`You're currently using a development version of unstated`);
+}
 
 export class Container<State: {}> {
   state: State;
   _listeners: Array<Listener> = [];
+  __internalId: number = 0;
+
+  // Used for react redux dev tools
+  name: string = 'Unstated App';
+  __devTools: any;
 
   constructor() {
     CONTAINER_DEBUG_CALLBACKS.forEach(cb => cb(this));
+
+    COUNTER++;
+
+    this.__internalId = COUNTER;
+
+    // Allow set the widget name after construct
+    setTimeout(() => this.__connect(), 0);
+  }
+
+  __connect(): void {
+    if (
+      typeof window !== 'undefined' &&
+      process.env.NODE_ENV !== 'production'
+    ) {
+      if (window.__REDUX_DEVTOOLS_EXTENSION__) {
+        this.__devTools = window.__REDUX_DEVTOOLS_EXTENSION__.connect({
+          name: this.name || 'Instance ' + this.__internalId
+        });
+
+        this.__devTools.init();
+
+        this.__devTools.subscribe(message => {
+          switch (message.payload && message.payload.type) {
+            case 'JUMP_TO_STATE':
+            case 'JUMP_TO_ACTION':
+              this.state = JSON.parse(message.state);
+
+              let promises = this._listeners.map(listener => listener());
+
+              Promise.all(promises);
+          }
+        });
+      }
+    }
   }
 
   setState(
     updater: $Shape<State> | ((prevState: $Shape<State>) => $Shape<State>),
+    callbackOrInfo?: String | (() => void),
     callback?: () => void
   ): Promise<void> {
     return Promise.resolve().then(() => {
       let nextState;
+      const info = typeof callbackOrInfo === 'string' ? callbackOrInfo : '...';
+
+      if (typeof callbackOrInfo !== 'string') {
+        callback = callbackOrInfo;
+      }
 
       if (typeof updater === 'function') {
         nextState = updater(this.state);
@@ -33,6 +83,14 @@ export class Container<State: {}> {
       }
 
       this.state = Object.assign({}, this.state, nextState);
+
+      if (this.__devTools) {
+        this.__devTools.send(
+          this.name ? this.name + ' - ' + info : info,
+          this.state,
+          { name: this.name }
+        );
+      }
 
       let promises = this._listeners.map(listener => listener());
 
