@@ -66,7 +66,7 @@ For more examples, see the `example/` directory.
 
 ## Usage with redux dev tools
 
-Install the browser plugin available at [redux dev tools](http://extension.remotedev.io/), follow the instructions in the previous link.
+Install the browser plugin available in [redux dev tools](http://extension.remotedev.io/), follow the instructions in the previous link.
 
 Once done, the only change you need do in order to use with redux dev tools is a little change in the `Container` classes, in the example bellow we assign the "Counter" name for the redux dev tools widget.
 
