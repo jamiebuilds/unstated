@@ -64,6 +64,42 @@ render(
 
 For more examples, see the `example/` directory.
 
+## Usage with redux dev tools
+
+Install the browser plugin available at [redux dev tools](http://extension.remotedev.io/), follow the instructions in the previous link.
+
+Once done, the only change you need do in order to use with redux dev tools is a little change in the `Container` classes, in the example bellow we assign the "Counter" name for the redux dev tools widget.
+
+```
+class CounterContainer extends Container<CounterState> {
+  state = {
+    count: 0
+  };
+
+  increment() {
+    // With no info, backwards compatibility
+    this.setState({ count: this.state.count + 1 });
+
+    // With custom info, backwards compatibility
+    this.setState({ count: this.state.count + 1 }, 'INCREMENT');
+
+    // With custom info and providing a callback to be run after the state changes
+    this.setState({ count: this.state.count + 1 }, 'INCREMENT', );
+  }
+
+  decrement() {
+    // With no info, backwards compatibility
+    this.setState({ count: this.state.count - 1 });
+
+    // With custom info, backwards compatibility
+    this.setState({ count: this.state.count - 1 }, 'DECREMENT');
+
+    // With custom info and providing a callback to be run after the state changes
+    this.setState({ count: this.state.count - 1 }, 'DECREMENT', );
+  }
+}
+```
+
 ## Happy Customers
 
 <h4 align="center">
@@ -128,8 +164,12 @@ const Amount = React.createContext(1);
 
 class Counter extends React.Component {
   state = { count: 0 };
-  increment = amount => { this.setState({ count: this.state.count + amount }); };
-  decrement = amount => { this.setState({ count: this.state.count - amount }); };
+  increment = amount => {
+    this.setState({ count: this.state.count + amount });
+  };
+  decrement = amount => {
+    this.setState({ count: this.state.count - amount });
+  };
   render() {
     return (
       <Amount.Consumer>
@@ -157,7 +197,11 @@ class AmountAdjuster extends React.Component {
       <Amount.Provider value={this.state.amount}>
         <div>
           {this.props.children}
-          <input type="number" value={this.state.amount} onChange={this.handleChange}/>
+          <input
+            type="number"
+            value={this.state.amount}
+            onChange={this.handleChange}
+          />
         </div>
       </Amount.Provider>
     );
@@ -166,7 +210,7 @@ class AmountAdjuster extends React.Component {
 
 render(
   <AmountAdjuster>
-    <Counter/>
+    <Counter />
   </AmountAdjuster>
 );
 ```
@@ -280,9 +324,9 @@ something that works in every browser.
 
 Next we'll need a piece to introduce our state back into the tree so that:
 
-* When state changes, our components re-render.
-* We can depend on our container's state.
-* We can call methods on our container.
+- When state changes, our components re-render.
+- We can depend on our container's state.
+- We can call methods on our container.
 
 For this we have the `<Subscribe>` component which allows us to pass our
 container classes/instances and receive instances of them in the tree.
