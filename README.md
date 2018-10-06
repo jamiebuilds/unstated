@@ -96,10 +96,10 @@ class CounterContainer extends Container<CounterState> {
       console.log('Counter after state changes: ' + this.state.count);
     });
 
-    // With custom info, backward compatibility
+    // With custom info for redux dev tools
     this.setState({ count: this.state.count + 1 }, 'INCREMENT');
 
-    // With custom info and providing a callback to be run after the state changes
+    // With custom info for redux dev tools and providing a callback to be run after the state changes
     this.setState({ count: this.state.count + 1 }, 'INCREMENT', () => {
       console.log('Counter after state changes: ' + this.state.count);
     });
@@ -115,10 +115,10 @@ class CounterContainer extends Container<CounterState> {
       console.log('Counter after state changes: ' + this.state.count);
     });
 
-    // With custom info, backward compatibility
+    // With custom info for dex dev tools
     this.setState({ count: this.state.count - 1 }, 'DECREMENT');
 
-    // With custom info and providing a callback to be run after the state changes
+    // With custom info for redux dev tools and providing a callback to be run after the state changes
     this.setState({ count: this.state.count - 1 }, 'DECREMENT', () => {
       console.log('Counter after state changes: ' + this.state.count);
     });
