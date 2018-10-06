@@ -71,10 +71,20 @@ Install the browser plugin available in [redux dev tools](http://extension.remot
 Once done, the only change you need do in order to use with redux dev tools is a little change in the `Container` classes, in the example bellow we assign the "Counter" name for the redux dev tools widget.
 
 ```js
+// @flow
+import { Container } from 'unstated';
+
+type CounterState = {
+  count: number
+};
+
 class CounterContainer extends Container<CounterState> {
   state = {
     count: 0
   };
+
+  // Widget name to show in the redux devl tools panel
+  name = 'Counter';
 
   increment() {
     // With no info, backwards compatibility
