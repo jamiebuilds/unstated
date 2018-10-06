@@ -6,6 +6,7 @@ export class Container<State extends object> {
     state:
       | ((prevState: Readonly<State>) => Pick<State, K> | State | null)
       | (Pick<State, K> | State | null),
+    callbackOrInfo?: String | (() => void),
     callback?: () => void
   ): Promise<void>;
   subscribe(fn: () => any): void;

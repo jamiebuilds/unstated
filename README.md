@@ -64,6 +64,68 @@ render(
 
 For more examples, see the `example/` directory.
 
+## Usage with redux dev tools
+
+Install the browser plugin available in [redux dev tools](http://extension.remotedev.io/), follow the instructions in the previous link.
+
+Once done, the only change you need do in order to use with redux dev tools is a little change in the `Container` classes, in the example bellow we assign the "Counter" name for the redux dev tools widget.
+
+```js
+// @flow
+import { Container } from 'unstated';
+
+type CounterState = {
+  count: number
+};
+
+class CounterContainer extends Container<CounterState> {
+  state = {
+    count: 0
+  };
+
+  // Widget name to show in the redux devl tools panel
+  name = 'Counter';
+
+  increment() {
+    // With no info, backward compatibility
+    this.setState({ count: this.state.count + 1 });
+
+    // With no info and providing a callback to be run after the state changes
+    // backward compatibility
+    this.setState({ count: this.state.count + 1 }, () => {
+      console.log('Counter after state changes: ' + this.state.count);
+    });
+
+    // With custom info for redux dev tools
+    this.setState({ count: this.state.count + 1 }, 'INCREMENT');
+
+    // With custom info for redux dev tools and providing a callback to be run after the state changes
+    this.setState({ count: this.state.count + 1 }, 'INCREMENT', () => {
+      console.log('Counter after state changes: ' + this.state.count);
+    });
+  }
+
+  decrement() {
+    // With no info, backward compatibility
+    this.setState({ count: this.state.count - 1 });
+
+    // With no info and providing a callback to be run after the state changes
+    // backward compatibility
+    this.setState({ count: this.state.count - 1 }, () => {
+      console.log('Counter after state changes: ' + this.state.count);
+    });
+
+    // With custom info for dex dev tools
+    this.setState({ count: this.state.count - 1 }, 'DECREMENT');
+
+    // With custom info for redux dev tools and providing a callback to be run after the state changes
+    this.setState({ count: this.state.count - 1 }, 'DECREMENT', () => {
+      console.log('Counter after state changes: ' + this.state.count);
+    });
+  }
+}
+```
+
 ## Happy Customers
 
 <h4 align="center">
@@ -128,8 +190,12 @@ const Amount = React.createContext(1);
 
 class Counter extends React.Component {
   state = { count: 0 };
-  increment = amount => { this.setState({ count: this.state.count + amount }); };
-  decrement = amount => { this.setState({ count: this.state.count - amount }); };
+  increment = amount => {
+    this.setState({ count: this.state.count + amount });
+  };
+  decrement = amount => {
+    this.setState({ count: this.state.count - amount });
+  };
   render() {
     return (
       <Amount.Consumer>
@@ -157,7 +223,11 @@ class AmountAdjuster extends React.Component {
       <Amount.Provider value={this.state.amount}>
         <div>
           {this.props.children}
-          <input type="number" value={this.state.amount} onChange={this.handleChange}/>
+          <input
+            type="number"
+            value={this.state.amount}
+            onChange={this.handleChange}
+          />
         </div>
       </Amount.Provider>
     );
@@ -166,7 +236,7 @@ class AmountAdjuster extends React.Component {
 
 render(
   <AmountAdjuster>
-    <Counter/>
+    <Counter />
   </AmountAdjuster>
 );
 ```
@@ -280,9 +350,9 @@ something that works in every browser.
 
 Next we'll need a piece to introduce our state back into the tree so that:
 
-* When state changes, our components re-render.
-* We can depend on our container's state.
-* We can call methods on our container.
+- When state changes, our components re-render.
+- We can depend on our container's state.
+- We can call methods on our container.
 
 For this we have the `<Subscribe>` component which allows us to pass our
 container classes/instances and receive instances of them in the tree.
