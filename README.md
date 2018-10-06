@@ -87,25 +87,37 @@ class CounterContainer extends Container<CounterState> {
   name = 'Counter';
 
   increment() {
-    // With no info, backwards compatibility
+    // With no info, backward compatibility
     this.setState({ count: this.state.count + 1 });
 
-    // With custom info, backwards compatibility
+    // With no info and providing a callback to be run after the state changes
+    // backward compatibility
+    this.setState({ count: this.state.count + 1 });
+
+    // With custom info, backward compatibility
     this.setState({ count: this.state.count + 1 }, 'INCREMENT');
 
     // With custom info and providing a callback to be run after the state changes
-    this.setState({ count: this.state.count + 1 }, 'INCREMENT');
+    this.setState({ count: this.state.count + 1 }, 'INCREMENT', () => {
+      console.log('Counter after state changes: ' + this.state.count )
+    });
   }
 
   decrement() {
-    // With no info, backwards compatibility
+    // With no info, backward compatibility
     this.setState({ count: this.state.count - 1 });
 
-    // With custom info, backwards compatibility
+    // With no info and providing a callback to be run after the state changes
+    // backward compatibility
+    this.setState({ count: this.state.count - 1 });
+
+    // With custom info, backward compatibility
     this.setState({ count: this.state.count - 1 }, 'DECREMENT');
 
     // With custom info and providing a callback to be run after the state changes
-    this.setState({ count: this.state.count - 1 }, 'DECREMENT');
+    this.setState({ count: this.state.count - 1 }, 'DECREMENT', () => {
+      console.log('Counter after state changes: ' + this.state.count )
+    }););
   }
 }
 ```
