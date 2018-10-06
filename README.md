@@ -70,7 +70,7 @@ Install the browser plugin available in [redux dev tools](http://extension.remot
 
 Once done, the only change you need do in order to use with redux dev tools is a little change in the `Container` classes, in the example bellow we assign the "Counter" name for the redux dev tools widget.
 
-```
+```js
 class CounterContainer extends Container<CounterState> {
   state = {
     count: 0
@@ -84,7 +84,7 @@ class CounterContainer extends Container<CounterState> {
     this.setState({ count: this.state.count + 1 }, 'INCREMENT');
 
     // With custom info and providing a callback to be run after the state changes
-    this.setState({ count: this.state.count + 1 }, 'INCREMENT', );
+    this.setState({ count: this.state.count + 1 }, 'INCREMENT');
   }
 
   decrement() {
@@ -95,7 +95,7 @@ class CounterContainer extends Container<CounterState> {
     this.setState({ count: this.state.count - 1 }, 'DECREMENT');
 
     // With custom info and providing a callback to be run after the state changes
-    this.setState({ count: this.state.count - 1 }, 'DECREMENT', );
+    this.setState({ count: this.state.count - 1 }, 'DECREMENT');
   }
 }
 ```
