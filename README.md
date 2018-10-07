@@ -64,6 +64,68 @@ render(
 
 For more examples, see the `example/` directory.
 
+## Integration with redux dev tools
+
+Install the browser plugin available in [redux dev tools](http://extension.remotedev.io/), follow the instructions and you are ready to go. This plugin makes jumping from different state in time possible (time travel).
+
+Once the plugin is installed we need to communicate actions to it, the changes you need to do are in the `Container` classes. You must give an instance name and notify actions using the same payload for state changes.
+
+In the example bellow we assign the "Counter" name for the redux dev tools widget and notify about `INCREMENT` and `DECREMENT` actions, using the reserved keyword `\_\_action, so we can track this in the redux dev tools panel using the web browser.
+
+```js
+// @flow
+import { Container } from 'unstated';
+
+type CounterState = {
+  count: number
+};
+
+class CounterContainer extends Container<CounterState> {
+  state = {
+    count: 0
+  };
+
+  // Widget name to show in the redux devl tools panel
+  name = 'Counter';
+
+  increment() {
+    this.setState({
+      count: this.state.count + 1,
+      __action: 'INCREMENT'
+    });
+
+    // With callback
+    this.setState(
+      {
+        count: this.state.count + 1,
+        __action: 'INCREMENT'
+      },
+      () => {
+        console.log('Counter after state changes: ' + this.state.count);
+      }
+    );
+  }
+
+  decrement() {
+    this.setState({
+      count: this.state.count - 1,
+      __action: 'DECREMENT'
+    });
+
+    // With callback
+    this.setState(
+      {
+        count: this.state.count - 1,
+        __action: 'DECREMENT'
+      },
+      () => {
+        console.log('Counter after state changes: ' + this.state.count);
+      }
+    );
+  }
+}
+```
+
 ## Happy Customers
 
 <h4 align="center">
@@ -76,6 +138,12 @@ For more examples, see the `example/` directory.
   "When people say you don't need Redux most of the time, they actually mean you do need Unstated.<br>It's like setState on fucking horse steroids"
   <br><br>
   <a href="https://twitter.com/ken_wheeler">Ken Wheeler</a> (obviously)
+</h4>
+
+<h4 align="center">
+  "I used unstated as alternative for state management for testing an alternative state management... after that my team rewrote the whole mobile app to use unstated. Happy development."
+  <br><br>
+  <a href="https://github.com/xaamin">Benjamín Martínez</a>
 </h4>
 
 ## Guide
@@ -128,8 +196,12 @@ const Amount = React.createContext(1);
 
 class Counter extends React.Component {
   state = { count: 0 };
-  increment = amount => { this.setState({ count: this.state.count + amount }); };
-  decrement = amount => { this.setState({ count: this.state.count - amount }); };
+  increment = amount => {
+    this.setState({ count: this.state.count + amount });
+  };
+  decrement = amount => {
+    this.setState({ count: this.state.count - amount });
+  };
   render() {
     return (
       <Amount.Consumer>
@@ -157,7 +229,11 @@ class AmountAdjuster extends React.Component {
       <Amount.Provider value={this.state.amount}>
         <div>
           {this.props.children}
-          <input type="number" value={this.state.amount} onChange={this.handleChange}/>
+          <input
+            type="number"
+            value={this.state.amount}
+            onChange={this.handleChange}
+          />
         </div>
       </Amount.Provider>
     );
@@ -166,7 +242,7 @@ class AmountAdjuster extends React.Component {
 
 render(
   <AmountAdjuster>
-    <Counter/>
+    <Counter />
   </AmountAdjuster>
 );
 ```
@@ -280,9 +356,9 @@ something that works in every browser.
 
 Next we'll need a piece to introduce our state back into the tree so that:
 
-* When state changes, our components re-render.
-* We can depend on our container's state.
-* We can call methods on our container.
+- When state changes, our components re-render.
+- We can depend on our container's state.
+- We can call methods on our container.
 
 For this we have the `<Subscribe>` component which allows us to pass our
 container classes/instances and receive instances of them in the tree.
