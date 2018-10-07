@@ -1,6 +1,6 @@
 {
   "name": "unstated",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "State so simple, it goes without saying",
   "main": "lib/unstated.js",
   "module": "lib/unstated.es.js",
@@ -8,11 +8,12 @@
   "repository": "https://github.com/thejameskyle/unstated",
   "author": "James Kyle <me@thejameskyle.com>",
   "license": "MIT",
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "clean": "rm -rf lib",
-    "build":
-      "rollup -c && flow-copy-source src lib && cp src/unstated.d.ts lib/unstated.d.ts",
+    "build": "rollup -c && flow-copy-source src lib && cp src/unstated.d.ts lib/unstated.d.ts",
     "typecheck": "flow",
     "test": "jest",
     "format": "prettier --write **/*.{js,json,md}",
@@ -52,6 +53,9 @@
     "typescript": "^2.7.1"
   },
   "lint-staged": {
-    "*.{js,json,md}": ["prettier --write", "git add"]
+    "*.{js,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
