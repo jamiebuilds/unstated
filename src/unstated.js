@@ -78,7 +78,7 @@ export class Container<State: {}> {
       let info = '...';
 
       if (typeof nextState === 'object') {
-        info = nextState.__action || info;
+        info = nextState.__action ? String(nextState.__action) : info;
 
         nextState.__action && delete nextState.__action;
       }
