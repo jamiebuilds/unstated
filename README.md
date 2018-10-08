@@ -141,7 +141,7 @@ class CounterContainer extends Container<CounterState> {
 </h4>
 
 <h4 align="center">
-  "I used unstated as alternative for state management for testing an alternative state management... after that my team rewrote the whole mobile app to use unstated. Happy development."
+  "I used unstated as alternative for state management for testing purpose... after that my team rewrote the whole mobile app to use unstated. Happy development."
   <br><br>
   <a href="https://github.com/xaamin">Benjamín Martínez</a>
 </h4>
