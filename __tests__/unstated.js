@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
-import assert from 'assert';
 import renderer from 'react-test-renderer';
 import { Provider, Subscribe, Container } from '../src/unstated';
+import { createImportSpecifier } from 'typescript';
 
 function render(element) {
   return renderer.create(element).toJSON();
@@ -20,13 +20,6 @@ class CounterContainer extends Container<{ count: number }> {
   }
   decrement(amount = 1) {
     this.setState({ count: this.state.count - amount });
-  }
-}
-
-class AmounterContainer extends Container<{ amount: number }> {
-  state = { amount: 1 };
-  setAmount(amount) {
-    this.setState({ amount });
   }
 }
 
@@ -48,44 +41,7 @@ function Counter() {
   );
 }
 
-function CounterWithAmount() {
-  return (
-    <Subscribe to={[CounterContainer, AmounterContainer]}>
-      {(counter, amounter) => (
-        <div>
-          <span>{counter.state.count}</span>
-          <button onClick={() => counter.decrement(amounter.state.amount)}>
-            -
-          </button>
-          <button onClick={() => counter.increment(amounter.state.amount)}>
-            +
-          </button>
-        </div>
-      )}
-    </Subscribe>
-  );
-}
-
-function CounterWithAmountApp() {
-  return (
-    <Subscribe to={[AmounterContainer]}>
-      {amounter => (
-        <div>
-          <Counter />
-          <input
-            type="number"
-            value={amounter.state.amount}
-            onChange={event => {
-              amounter.setAmount(parseInt(event.currentTarget.value, 10));
-            }}
-          />
-        </div>
-      )}
-    </Subscribe>
-  );
-}
-
-test('counter', async () => {
+test('should incresase/decrease state counter in container', async () => {
   let counter = new CounterContainer();
   let tree = render(
     <Provider inject={[counter]}>
@@ -93,11 +49,29 @@ test('counter', async () => {
     </Provider>
   );
 
-  assert.equal(counter.state.count, 0);
+  expect(counter.state.count).toBe(0);
 
   await click(tree, 'increment');
-  assert.equal(counter.state.count, 1);
+  expect(counter.state.count).toBe(1);
 
   await click(tree, 'decrement');
-  assert.equal(counter.state.count, 0);
+  expect(counter.state.count).toBe(0);
+});
+
+test('should remove subscriber listeners if component is unmounted', () => {
+  let counter = new CounterContainer();
+  let tree = renderer.create(
+    <Provider inject={[counter]}>
+      <Counter />
+    </Provider>
+  );
+  const testInstance = tree.root.findByType(Subscribe)._fiber.stateNode;
+
+  expect(counter._listeners.length).toBe(1);
+  expect(testInstance.unmounted).toBe(false);
+
+  tree.unmount();
+
+  expect(counter._listeners.length).toBe(0);
+  expect(testInstance.unmounted).toBe(true);
 });
