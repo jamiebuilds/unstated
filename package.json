@@ -60,9 +60,9 @@
     "collectCoverageFrom": ["src/**/*.js"],
     "coverageThreshold": {
       "global": {
-        "lines": 76,
-        "statements": 74,
-        "functions": 86,
+        "lines": 80,
+        "statements": 78,
+        "functions": 90,
         "branches": 45
       }
     }
