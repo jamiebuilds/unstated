@@ -53,5 +53,18 @@
   },
   "lint-staged": {
     "*.{js,json,md}": ["prettier --write", "git add"]
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": ["src/**/*.js"],
+    "coverageThreshold": {
+      "global": {
+        "lines": 76,
+        "statements": 74,
+        "functions": 86,
+        "branches": 45
+      }
+    }
   }
 }
