@@ -75,3 +75,10 @@ test('should remove subscriber listeners if component is unmounted', () => {
   expect(counter._listeners.length).toBe(0);
   expect(testInstance.unmounted).toBe(true);
 });
+
+test('should throw an error if <Subscribe> component is not wrapper with <Provider>', () => {
+  spyOn(console, 'error');
+  expect(() => render(<Counter />)).toThrowError(
+    'You must wrap your <Subscribe> components with a <Provider>'
+  );
+});
