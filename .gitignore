@@ -3,3 +3,4 @@ node_modules
 lib
 .cache
 dist
+coverage

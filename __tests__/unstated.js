@@ -1,10 +1,16 @@
 // @flow
 import React from 'react';
+import assert from 'assert';
 import renderer from 'react-test-renderer';
 import { Provider, Subscribe, Container } from '../src/unstated';
 
 function render(element) {
   return renderer.create(element).toJSON();
+}
+
+async function click({ children = [] }, id) {
+  const el = children.find(({ props = {} }) => props.id === id);
+  el.props.onClick();
 }
 
 class CounterContainer extends Container<{ count: number }> {
@@ -30,8 +36,12 @@ function Counter() {
       {counter => (
         <div>
           <span>{counter.state.count}</span>
-          <button onClick={() => counter.decrement()}>-</button>
-          <button onClick={() => counter.increment()}>+</button>
+          <button id="decrement" onClick={() => counter.decrement()}>
+            -
+          </button>
+          <button id="increment" onClick={() => counter.increment()}>
+            +
+          </button>
         </div>
       )}
     </Subscribe>
@@ -75,6 +85,19 @@ function CounterWithAmountApp() {
   );
 }
 
-test('basic', () => {
-  // still too lazy
+test('counter', async () => {
+  let counter = new CounterContainer();
+  let tree = render(
+    <Provider inject={[counter]}>
+      <Counter />
+    </Provider>
+  );
+
+  assert.equal(counter.state.count, 0);
+
+  await click(tree, 'increment');
+  assert.equal(counter.state.count, 1);
+
+  await click(tree, 'decrement');
+  assert.equal(counter.state.count, 0);
 });
