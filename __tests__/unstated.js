@@ -9,7 +9,7 @@ function render(element) {
 }
 
 async function click({ children = [] }, id) {
-  const el = children.find(({ props = {} }) => props.id === id);
+  const el: any = children.find(({ props = {} }) => props.id === id);
   el.props.onClick();
 }
 
