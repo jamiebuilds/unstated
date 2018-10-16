@@ -516,4 +516,5 @@ render(
 ## Related
 
 - [unstated-debug](https://github.com/sindresorhus/unstated-debug) - Debug your Unstated containers with ease
+- [unstated-persist](https://github.com/rt2zz/unstated-persist) - Persist your Unstated containers with ease
  
