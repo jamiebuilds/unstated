@@ -7,7 +7,7 @@ node_js:
 cache:
   yarn: true
   directories:
-  - node_modules
-script: 
-  - yarn test && yarn flow
+    - node_modules
+script:
+  - yarn test --coverage && yarn flow
   - yarn typescript
