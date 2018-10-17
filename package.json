@@ -53,15 +53,5 @@
   },
   "lint-staged": {
     "*.{js,json,md}": ["prettier --write", "git add"]
-  },
-  "jest": {
-    "coverageThreshold": {
-      "global": {
-        "lines": 82,
-        "statements": 80,
-        "functions": 90,
-        "branches": 50
-      }
-    }
   }
 }
