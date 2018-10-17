@@ -2,7 +2,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { Provider, Subscribe, Container } from '../src/unstated';
-import { createImportSpecifier } from 'typescript';
 
 function render(element) {
   return renderer.create(element).toJSON();
