@@ -36,25 +36,28 @@ export class Container<State: {}> {
       process.env.NODE_ENV !== 'production'
     ) {
       if (window.__REDUX_DEVTOOLS_EXTENSION__) {
-        this.__devTools = window.__REDUX_DEVTOOLS_EXTENSION__.connect({
-          name: this.name || 'Instance ' + this.__internalId
-        });
+        const name = this.name || 'Unstated ' + this.__internalId;
+
+        this.__devTools = window.__REDUX_DEVTOOLS_EXTENSION__.connect({ name });
 
         this.__devTools.init();
-
-        this.__devTools.subscribe(message => {
-          switch (message.payload && message.payload.type) {
-            case 'JUMP_TO_STATE':
-            case 'JUMP_TO_ACTION':
-              this.state = JSON.parse(message.state);
-
-              let promises = this._listeners.map(listener => listener());
-
-              Promise.all(promises);
-          }
-        });
+        this.subscribeToReduxDevToolsEvents();
       }
     }
+  }
+
+  subscribeToReduxDevToolsEvents(): void {
+    this.__devTools.subscribe(message => {
+      switch (message.payload && message.payload.type) {
+        case 'JUMP_TO_STATE':
+        case 'JUMP_TO_ACTION':
+          this.state = JSON.parse(message.state);
+
+          let promises = this._listeners.map(listener => listener());
+
+          Promise.all(promises);
+      }
+    });
   }
 
   setState(
@@ -75,25 +78,11 @@ export class Container<State: {}> {
         return;
       }
 
-      let info = '...';
-
-      if (typeof nextState === 'object') {
-        info = nextState.__action ? String(nextState.__action) : info;
-
-        nextState.__action && delete nextState.__action;
-      }
+      const info = this.getInfoForReduxDevTools(nextState);
 
       this.state = Object.assign({}, this.state, nextState);
 
-      if (this.__devTools) {
-        this.__devTools.send(
-          this.name ? this.name + ' - ' + info : info,
-          this.state,
-          { name: this.name }
-        );
-      }
-
-      this.state = Object.assign({}, this.state, nextState);
+      this.emitStateChangesToReduxDevTools(info);
 
       let promises = this._listeners.map(listener => listener());
 
@@ -105,11 +94,33 @@ export class Container<State: {}> {
     });
   }
 
-  subscribe(fn: Listener) {
+  getInfoForReduxDevTools(nextState: $Shape<State>): string {
+    let info = '...';
+
+    if (typeof nextState === 'object') {
+      info = nextState.__action ? String(nextState.__action) : info;
+
+      nextState.__action && delete nextState.__action;
+    }
+
+    return info;
+  }
+
+  emitStateChangesToReduxDevTools(info: string): void {
+    if (this.__devTools) {
+      this.__devTools.send(
+        this.name ? this.name + ' - ' + info : info,
+        this.state,
+        { name: this.name }
+      );
+    }
+  }
+
+  subscribe(fn: Listener): void {
     this._listeners.push(fn);
   }
 
-  unsubscribe(fn: Listener) {
+  unsubscribe(fn: Listener): void {
     this._listeners = this._listeners.filter(f => f !== fn);
   }
 }
