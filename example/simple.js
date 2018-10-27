@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider, Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Container, useUnstated } from '../src/unstated';
 
 type CounterState = {
   count: number
@@ -24,6 +24,7 @@ function Counter() {
     <Subscribe to={[CounterContainer]}>
       {counter => (
         <div>
+          <label>Using Subscribe: </label>
           <button onClick={() => counter.decrement()}>-</button>
           <span>{counter.state.count}</span>
           <button onClick={() => counter.increment()}>+</button>
@@ -33,9 +34,22 @@ function Counter() {
   );
 }
 
+function CounterUsingHook() {
+  const [counter] = useUnstated(CounterContainer);
+  return (
+    <div>
+      <label>Using Hook: </label>
+      <button onClick={() => counter.decrement()}>-</button>
+      <span>{counter.state.count}</span>
+      <button onClick={() => counter.increment()}>+</button>
+    </div>
+  );
+}
+
 render(
   <Provider>
     <Counter />
+    <CounterUsingHook />
   </Provider>,
   window.simple
 );

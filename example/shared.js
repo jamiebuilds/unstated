@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider, Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Container, useUnstated } from '../src/unstated';
 
 type CounterState = {
   count: number
@@ -26,6 +26,7 @@ function Counter() {
     <Subscribe to={[sharedCounterContainer]}>
       {counter => (
         <div>
+          <label>Shared counter using Subscribe</label>
           <button onClick={() => counter.decrement()}>-</button>
           <span>{counter.state.count}</span>
           <button onClick={() => sharedCounterContainer.increment()}>+</button>
@@ -35,9 +36,22 @@ function Counter() {
   );
 }
 
+function HookCounter() {
+  const [counter] = useUnstated(sharedCounterContainer);
+  return (
+    <div>
+      <label>Shared counter using Hook</label>
+      <button onClick={() => counter.decrement()}>-</button>
+      <span>{counter.state.count}</span>
+      <button onClick={() => sharedCounterContainer.increment()}>+</button>
+    </div>
+  );
+}
+
 render(
   <Provider>
     <Counter />
+    <HookCounter />
   </Provider>,
   window.shared
 );

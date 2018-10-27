@@ -13,7 +13,7 @@ export class Container<State extends object> {
 }
 
 export interface ContainerType<State extends object> {
-  new (...args: any[]): Container<State>;
+  new(...args: any[]): Container<State>;
 }
 
 interface SubscribeProps {
@@ -21,7 +21,7 @@ interface SubscribeProps {
   children(...instances: Container<any>[]): React.ReactNode;
 }
 
-export class Subscribe extends React.Component<SubscribeProps> {}
+export class Subscribe extends React.Component<SubscribeProps> { }
 
 export interface ProviderProps {
   inject?: Container<any>[];
@@ -29,3 +29,5 @@ export interface ProviderProps {
 }
 
 export const Provider: React.SFC<ProviderProps>;
+
+export function useUnstated(...containers: (ContainerType<any> | Container<any>)[]): Container<any>[];

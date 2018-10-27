@@ -1,10 +1,15 @@
 // @flow
-import React, { type Node } from 'react';
-import createReactContext from 'create-react-context';
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  createContext,
+  type Node
+} from 'react';
 
 type Listener = () => mixed;
 
-const StateContext = createReactContext(null);
+const StateContext = createContext(null);
 
 export class Container<State: {}> {
   state: State;
@@ -186,4 +191,61 @@ export function __SUPER_SECRET_CONTAINER_DEBUG_HOOK__(
   callback: (container: Container<any>) => mixed
 ) {
   CONTAINER_DEBUG_CALLBACKS.push(callback);
+}
+
+/**
+ * Subscribe using new Hook api
+ */
+export function useUnstated(...containers: ContainersType) {
+  const map: ContainerMapType | null = useContext(StateContext);
+  if (map === null) {
+    throw new Error('You must wrap your hook component with a <Provider>');
+  }
+
+  const [state, setState] = useState({});
+
+  const [instances, setInstances] = useState(createInstances());
+
+  useEffect(() => {
+    const unsubscribers = instances.map(instance => {
+      instance.unsubscribe(onUpdate);
+      instance.subscribe(onUpdate);
+      return () => instance.unsubscribe(onUpdate);
+    });
+    return () => unsubscribers.map(unsubscribe => unsubscribe());
+  }, []);
+
+  function onUpdate() {
+    return new Promise(resolve => {
+      setState(DUMMY_STATE, resolve);
+    });
+  }
+
+  function unsubscribe() {
+    instances.forEach(container => {
+      container.unsubscribe(onUpdate);
+    });
+  }
+
+  function createInstances() {
+    return containers.map(ContainerItem => {
+      let instance;
+      if (
+        typeof ContainerItem === 'object' &&
+        ContainerItem instanceof Container
+      ) {
+        instance = ContainerItem;
+      } else {
+        instance = map.get(ContainerItem);
+
+        if (!instance) {
+          instance = new ContainerItem();
+          map.set(ContainerItem, instance);
+        }
+      }
+      return instance;
+    });
+  }
+
+  return instances;
 }
