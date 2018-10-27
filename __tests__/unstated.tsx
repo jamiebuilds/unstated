@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Provider, Subscribe, Container } from '../src/unstated';
+import { Provider, Subscribe, Container, useUnstated } from '../src/unstated';
 
 class CounterContainer extends Container<{ count: number }> {
   state = { count: 0 };
@@ -31,7 +31,16 @@ function Counter() {
     </Subscribe>
   );
 }
-
+function CounterUsingHook() {
+  const [counter] = useUnstated(CounterContainer) as [CounterContainer];
+  return (
+    <div>
+      <span>{counter.state.count}</span>
+      <button onClick={() => counter.decrement()}>-</button>
+      <button onClick={() => counter.increment()}>+</button>
+    </div>
+  )
+}
 function CounterWithAmount() {
   return (
     <Subscribe to={[CounterContainer, AmounterContainer]}>
@@ -47,6 +56,21 @@ function CounterWithAmount() {
         </div>
       )}
     </Subscribe>
+  );
+}
+
+function CounterWithAmountUsingHook() {
+  const [counter, amounter] = useUnstated(CounterContainer, AmounterContainer) as [CounterContainer, AmounterContainer];
+  return (
+    <div>
+      <span>{counter.state.count}</span>
+      <button onClick={() => counter.decrement(amounter.state.amount)}>
+        -
+          </button>
+      <button onClick={() => counter.increment(amounter.state.amount)}>
+        +
+          </button>
+    </div>
   );
 }
 
@@ -66,6 +90,24 @@ function CounterWithAmountApp() {
         </div>
       )}
     </Subscribe>
+  );
+}
+
+function CounterWithAmountAppUsingHook() {
+  const [amounter] = useUnstated(AmounterContainer) as [AmounterContainer];
+
+  return (
+    <div>
+      <Counter />
+      <CounterUsingHook />
+      <input
+        type="number"
+        value={amounter.state.amount}
+        onChange={event => {
+          amounter.setAmount(parseInt(event.currentTarget.value, 10));
+        }}
+      />
+    </div>
   );
 }
 
@@ -89,10 +131,26 @@ function CounterWithSharedAmountApp() {
     </Subscribe>
   );
 }
-
+function CounterWithSharedAmountAppUsingHook() {
+  const [amounter] = useUnstated(sharedAmountContainer) as [AmounterContainer];
+  return (
+    <div>
+      <Counter />
+      <CounterUsingHook />
+      <input
+        type="number"
+        value={amounter.state.amount}
+        onChange={event => {
+          amounter.setAmount(parseInt(event.currentTarget.value, 10));
+        }}
+      />
+    </div>
+  );
+}
 let counter = new CounterContainer();
 let render = () => (
   <Provider inject={[counter]}>
     <Counter />
+    <CounterUsingHook />
   </Provider>
 );

@@ -1,10 +1,15 @@
 // @flow
-import React, { type Node } from 'react';
-import createReactContext from 'create-react-context';
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  createContext,
+  type Node
+} from 'react';
 
 type Listener = () => mixed;
 
-const StateContext = createReactContext(null);
+const StateContext = createContext(null);
 
 export class Container<State: {}> {
   state: State;
@@ -186,4 +191,63 @@ export function __SUPER_SECRET_CONTAINER_DEBUG_HOOK__(
   callback: (container: Container<any>) => mixed
 ) {
   CONTAINER_DEBUG_CALLBACKS.push(callback);
+}
+
+/**
+ * Subscribe using new Hook api
+ */
+export function useUnstated(...containers: ContainersType) {
+  const map: ContainerMapType | null = useContext(StateContext);
+
+  const [state, setState] = useState({});
+  let unmounted;
+  // componentWillUnmount. Note the empty array as 2nd argument.
+  useEffect(() => {
+    unmounted = false;
+    return () => {
+      unmounted = true;
+      instances.forEach(container => {
+        container.unsubscribe(onUpdate);
+      });
+    };
+  }, []);
+
+  if (map === null) {
+    throw new Error('You must wrap your hook component with a <Provider>');
+  }
+
+  function onUpdate(): Listener {
+    return new Promise(resolve => {
+      if (!unmounted) {
+        setState(DUMMY_STATE, resolve);
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  let safeMap = map;
+  const instances: Array<ContainerType> = containers.map(ContainerItem => {
+    let instance;
+    if (
+      typeof ContainerItem === 'object' &&
+      ContainerItem instanceof Container
+    ) {
+      instance = ContainerItem;
+    } else {
+      instance = safeMap.get(ContainerItem);
+
+      if (!instance) {
+        instance = new ContainerItem();
+        safeMap.set(ContainerItem, instance);
+      }
+    }
+
+    instance.unsubscribe(onUpdate);
+    instance.subscribe(onUpdate);
+
+    return instance;
+  });
+
+  return instances;
 }
