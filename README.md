@@ -16,7 +16,7 @@ yarn add unstated
 
 ## Example
 
-```js
+```jsx
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
@@ -87,7 +87,7 @@ but doesn't command some crazy architecture and methodology.
 So first off: Component state is nice! It makes sense and people can pick it
 up quickly:
 
-```js
+```jsx
 class Counter extends React.Component {
   state = { count: 0 };
   increment = () => {
@@ -123,7 +123,7 @@ But how do we share values between components in React? Through "context".
 > **Note:** The following is part of the new `React.createContext` API
 > [described in this RFC](https://github.com/reactjs/rfcs/blob/master/text/0002-new-version-of-context.md).
 
-```js
+```jsx
 const Amount = React.createContext(1);
 
 class Counter extends React.Component {
@@ -287,7 +287,7 @@ Next we'll need a piece to introduce our state back into the tree so that:
 For this we have the `<Subscribe>` component which allows us to pass our
 container classes/instances and receive instances of them in the tree.
 
-```js
+```jsx
 function Counter() {
   return (
     <Subscribe to={[CounterContainer]}>
@@ -310,7 +310,7 @@ function Counter() {
 The final piece that we'll need is something to store all of our instances
 internally. For this we have `<Provider>`.
 
-```js
+```jsx
 render(
   <Provider>
     <Counter />
@@ -321,7 +321,7 @@ render(
 We can do some interesting things with `<Provider>` as well like dependency
 injection:
 
-```js
+```jsx
 let counter = new CounterContainer();
 
 render(
@@ -424,7 +424,7 @@ What? Are you too cool to use an old framework?
 Third, a lot of shared state between components is localized to a few
 components in the tree.
 
-```js
+```jsx
 <Tabs>
   <Tab>One</Tab>
   <Tab>Two</Tab>
@@ -456,7 +456,7 @@ If you want to use your own instance of a container directly to `<Subscribe>`
 and you don't care about dependency injection, you can do so:
 
 <!-- prettier-ignore -->
-```js
+```jsx
 let counter = new CounterContainer();
 
 function Counter() {
@@ -487,7 +487,7 @@ A good pattern for doing this might be to add a constructor to your container
 which accepts `props` sorta like React components. Then create your own
 instance of your container and pass it into `<Provider inject>`.
 
-```js
+```jsx
 class CounterContainer extends Container {
   constructor(props = {}) {
     super();
