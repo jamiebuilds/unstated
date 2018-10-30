@@ -8,11 +8,12 @@
   "repository": "https://github.com/thejameskyle/unstated",
   "author": "James Kyle <me@thejameskyle.com>",
   "license": "MIT",
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "clean": "rm -rf lib",
-    "build":
-      "rollup -c && flow-copy-source src lib && cp src/unstated.d.ts lib/unstated.d.ts",
+    "build": "rollup -c && flow-copy-source src lib && cp src/unstated.d.ts lib/unstated.d.ts",
     "typecheck": "flow",
     "test": "jest",
     "format": "prettier --write **/*.{js,json,md}",
@@ -35,14 +36,14 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
-    "flow-bin": "^0.64.0",
+    "flow-bin": "^0.85.0",
     "flow-copy-source": "^1.2.2",
     "husky": "^0.14.3",
     "jest": "^22.1.4",
     "jsdom": "^11.6.2",
     "lint-staged": "^6.1.0",
     "parcel-bundler": "^1.5.1",
-    "prettier": "^1.10.2",
+    "prettier": "^1.14.3",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -52,6 +53,9 @@
     "typescript": "^2.7.1"
   },
   "lint-staged": {
-    "*.{js,json,md}": ["prettier --write", "git add"]
+    "*.{js,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

@@ -4,7 +4,7 @@ import createReactContext from 'create-react-context';
 
 type Listener = () => mixed;
 
-const StateContext = createReactContext(null);
+const StateContext = createReactContext<ContainerMapType | null>(null);
 
 export class Container<State: {}> {
   state: State;
