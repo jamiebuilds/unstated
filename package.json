@@ -49,7 +49,7 @@
     "react-test-renderer": "^16.2.0",
     "rollup": "^0.55.3",
     "rollup-plugin-babel": "^3.0.3",
-    "typescript": "^2.7.1"
+    "typescript": "^2.8.0"
   },
   "lint-staged": {
     "*.{js,json,md}": ["prettier --write", "git add"]
