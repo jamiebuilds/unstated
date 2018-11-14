@@ -4,8 +4,8 @@ export class Container<State extends object> {
   state: State;
   setState<K extends keyof State>(
     state:
-    | ((prevState: Readonly<State>) => Pick<State, K> | State | null)
-    | (Pick<State, K> | State | null),
+      | ((prevState: Readonly<State>) => Pick<State, K> | State | null)
+      | (Pick<State, K> | State | null),
     callback?: () => void
   ): Promise<void>;
   subscribe(fn: () => any): void;
