@@ -21,9 +21,6 @@
     "example": "parcel example/index.html",
     "typescript": "tsc -p tsconfig.json"
   },
-  "dependencies": {
-    "create-react-context": "^0.1.5"
-  },
   "peerDependencies": {
     "react": "next"
   },

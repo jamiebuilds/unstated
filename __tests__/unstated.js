@@ -62,7 +62,6 @@ test('should incresase/decrease state counter in container', async () => {
       <Counter />
     </Provider>
   );
-
   expect(counter.state.count).toBe(0);
 
   await click(tree, 'increment');
@@ -95,15 +94,11 @@ test('should remove subscriber listeners if component is unmounted', () => {
       <Counter />
     </Provider>
   );
-  const testInstance = tree.root.findByType(Subscribe)._fiber.stateNode;
-
   expect(counter._listeners.length).toBe(1);
-  expect(testInstance.unmounted).toBe(false);
 
   tree.unmount();
 
   expect(counter._listeners.length).toBe(0);
-  expect(testInstance.unmounted).toBe(true);
 });
 
 test('should remove subscriber listeners if component is unmounted with useUnstated', () => {
@@ -126,7 +121,7 @@ test('should remove subscriber listeners if component is unmounted with useUnsta
 test('should throw an error if <Subscribe> component is not wrapper with <Provider>', () => {
   spyOn(console, 'error');
   expect(() => render(<Counter />)).toThrowError(
-    'You must wrap your <Subscribe> components with a <Provider>'
+    'You must wrap your hook component with a <Provider>'
   );
 });
 

@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useRef,
   useMemo,
-  useCallback,
   createContext,
   type Node
 } from 'react';
@@ -72,8 +71,6 @@ export type SubscribeProps<Containers: ContainersType> = {
   ) => Node
 };
 
-type SubscribeState = {};
-
 const DUMMY_STATE = {};
 export type ProviderProps = {
   inject?: Array<ContainerType>,
@@ -83,13 +80,11 @@ export type ProviderProps = {
 export function Provider({ inject, children }: ProviderProps) {
   const parentMap = useContext(StateContext);
   const childMap = useRef(new Map(parentMap));
-  useEffect(() => {
-    if (!inject) return;
+  if(inject) {
     inject.forEach(instance => {
       childMap.current.set(instance.constructor, instance);
     });
-  }, []);
-
+  }
   return (
     <StateContext.Provider value={childMap.current}>
       {children}
@@ -128,13 +123,10 @@ export function useUnstated(...containers: ContainersType) {
     []
   );
 
-  const onUpdate = useRef(
-    () =>
-      new Promise(resolve => {
-        if (!unmounted.current) setState(DUMMY_STATE, resolve);
-        else resolve();
-      })
-  );
+  const onUpdate = useRef(() => new Promise(resolve => {
+    if (!unmounted.current) setState(DUMMY_STATE, resolve);
+    else resolve();
+  }));
 
   function unsubscribe() {
     instances.current.forEach(container => {
