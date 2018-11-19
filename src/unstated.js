@@ -3,6 +3,9 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useRef,
+  useMemo,
+  useCallback,
   createContext,
   type Node
 } from 'react';
@@ -72,114 +75,25 @@ export type SubscribeProps<Containers: ContainersType> = {
 type SubscribeState = {};
 
 const DUMMY_STATE = {};
-
-export class Subscribe<Containers: ContainersType> extends React.Component<
-  SubscribeProps<Containers>,
-  SubscribeState
-> {
-  state = {};
-  instances: Array<ContainerType> = [];
-  unmounted = false;
-
-  componentWillUnmount() {
-    this.unmounted = true;
-    this._unsubscribe();
-  }
-
-  _unsubscribe() {
-    this.instances.forEach(container => {
-      container.unsubscribe(this.onUpdate);
-    });
-  }
-
-  onUpdate: Listener = () => {
-    return new Promise(resolve => {
-      if (!this.unmounted) {
-        this.setState(DUMMY_STATE, resolve);
-      } else {
-        resolve();
-      }
-    });
-  };
-
-  _createInstances(
-    map: ContainerMapType | null,
-    containers: ContainersType
-  ): Array<ContainerType> {
-    this._unsubscribe();
-
-    if (map === null) {
-      throw new Error(
-        'You must wrap your <Subscribe> components with a <Provider>'
-      );
-    }
-
-    let safeMap = map;
-    let instances = containers.map(ContainerItem => {
-      let instance;
-
-      if (
-        typeof ContainerItem === 'object' &&
-        ContainerItem instanceof Container
-      ) {
-        instance = ContainerItem;
-      } else {
-        instance = safeMap.get(ContainerItem);
-
-        if (!instance) {
-          instance = new ContainerItem();
-          safeMap.set(ContainerItem, instance);
-        }
-      }
-
-      instance.unsubscribe(this.onUpdate);
-      instance.subscribe(this.onUpdate);
-
-      return instance;
-    });
-
-    this.instances = instances;
-    return instances;
-  }
-
-  render() {
-    return (
-      <StateContext.Consumer>
-        {map =>
-          this.props.children.apply(
-            null,
-            this._createInstances(map, this.props.to)
-          )
-        }
-      </StateContext.Consumer>
-    );
-  }
-}
-
 export type ProviderProps = {
   inject?: Array<ContainerType>,
   children: Node
 };
 
-export function Provider(props: ProviderProps) {
+export function Provider({ inject, children }: ProviderProps) {
+  const parentMap = useContext(StateContext);
+  const childMap = useRef(new Map(parentMap));
+  useEffect(() => {
+    if (!inject) return;
+    inject.forEach(instance => {
+      childMap.current.set(instance.constructor, instance);
+    });
+  }, []);
+
   return (
-    <StateContext.Consumer>
-      {parentMap => {
-        let childMap = new Map(parentMap);
-
-        if (props.inject) {
-          props.inject.forEach(instance => {
-            childMap.set(instance.constructor, instance);
-          });
-        }
-
-        return (
-          <StateContext.Provider value={childMap}>
-            {props.children}
-          </StateContext.Provider>
-        );
-      }}
-    </StateContext.Consumer>
+    <StateContext.Provider value={childMap.current}>
+      {children}
+    </StateContext.Provider>
   );
 }
 
@@ -203,49 +117,70 @@ export function useUnstated(...containers: ContainersType) {
   }
 
   const [state, setState] = useState({});
+  const instances = useRef([]);
+  const unmounted = useRef(false);
 
-  const [instances, setInstances] = useState(createInstances());
+  useEffect(
+    () => () => {
+      unmounted.current = true;
+      unsubscribe();
+    },
+    []
+  );
 
-  useEffect(() => {
-    const unsubscribers = instances.map(instance => {
-      instance.unsubscribe(onUpdate);
-      instance.subscribe(onUpdate);
-      return () => instance.unsubscribe(onUpdate);
-    });
-    return () => unsubscribers.map(unsubscribe => unsubscribe());
-  }, []);
-
-  function onUpdate() {
-    return new Promise(resolve => {
-      setState(DUMMY_STATE, resolve);
-    });
-  }
+  const onUpdate = useRef(
+    () =>
+      new Promise(resolve => {
+        if (!unmounted.current) setState(DUMMY_STATE, resolve);
+        else resolve();
+      })
+  );
 
   function unsubscribe() {
-    instances.forEach(container => {
-      container.unsubscribe(onUpdate);
+    instances.current.forEach(container => {
+      container.unsubscribe(onUpdate.current);
     });
   }
 
   function createInstances() {
-    return containers.map(ContainerItem => {
+    let safeMap = map;
+    unsubscribe();
+
+    const newInstances = containers.map(ContainerItem => {
       let instance;
+
       if (
         typeof ContainerItem === 'object' &&
         ContainerItem instanceof Container
       ) {
         instance = ContainerItem;
       } else {
-        instance = map.get(ContainerItem);
+        instance = safeMap.get(ContainerItem);
 
         if (!instance) {
           instance = new ContainerItem();
-          map.set(ContainerItem, instance);
+          safeMap.set(ContainerItem, instance);
         }
       }
+
+      instance.unsubscribe(onUpdate.current);
+      instance.subscribe(onUpdate.current);
+
       return instance;
     });
+
+    instances.current = newInstances;
+    return instances.current;
   }
 
-  return instances;
+  return useMemo(() => createInstances(), containers);
+}
+
+export function Subscribe<Containers: ContainersType>(
+  props: SubscribeProps<Containers>
+) {
+  const { to, children } = props;
+  const instances = useUnstated(...to);
+
+  return children(...instances);
 }
