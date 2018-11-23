@@ -16,18 +16,22 @@ export interface ContainerType<State extends object> {
   new(...args: any[]): Container<State>;
 }
 
-interface SubscribeProps {
-  to: (ContainerType<any> | Container<any>)[];
-  children(...instances: Container<any>[]): React.ReactNode;
-}
-
-export class Subscribe extends React.Component<SubscribeProps> { }
-
 export interface ProviderProps {
-  inject?: Container<any>[];
+  inject?: [...Array<Container<any>>];
   children: React.ReactNode;
 }
 
 export const Provider: React.SFC<ProviderProps>;
 
-export function useUnstated(...containers: (ContainerType<any> | Container<any>)[]): Container<any>[];
+type InjectableMap<T extends [...Array<Container<any>>]> = {
+  [K in keyof T]: T[K] | { new(): T[K] };
+};
+
+export function useUnstated<T extends [...Array<Container<any>>]>(...containers: InjectableMap<T>): T;
+
+interface SubscribeProps<T extends [...Array<Container<any>>]> {
+  to: InjectableMap<T>;
+  children(...instances: T): React.ReactNode;
+}
+
+export class Subscribe<T extends [...Array<Container<any>>]> extends React.Component<SubscribeProps<T>> { }

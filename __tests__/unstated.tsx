@@ -21,7 +21,7 @@ class AmounterContainer extends Container<{ amount: number }> {
 function Counter() {
   return (
     <Subscribe to={[CounterContainer]}>
-      {(counter: CounterContainer) => (
+      {(counter) => (
         <div>
           <span>{counter.state.count}</span>
           <button onClick={() => counter.decrement()}>-</button>
@@ -32,7 +32,7 @@ function Counter() {
   );
 }
 function CounterUsingHook() {
-  const [counter] = useUnstated(CounterContainer) as [CounterContainer];
+  const [counter] = useUnstated(CounterContainer);
   return (
     <div>
       <span>{counter.state.count}</span>
@@ -42,6 +42,23 @@ function CounterUsingHook() {
   )
 }
 function CounterWithAmount() {
+  return (
+    <Subscribe<[CounterContainer, AmounterContainer]> to={[CounterContainer, AmounterContainer]}>
+      {(counter, amounter) => (
+        <div>
+          <span>{counter.state.count}</span>
+          <button onClick={() => counter.decrement(amounter.state.amount)}>
+            -
+          </button>
+          <button onClick={() => counter.increment(amounter.state.amount)}>
+            +
+          </button>
+        </div>
+      )}
+    </Subscribe>
+  );
+}
+function CounterWithAmountAlt() {
   return (
     <Subscribe to={[CounterContainer, AmounterContainer]}>
       {(counter: CounterContainer, amounter: AmounterContainer) => (
@@ -58,9 +75,8 @@ function CounterWithAmount() {
     </Subscribe>
   );
 }
-
 function CounterWithAmountUsingHook() {
-  const [counter, amounter] = useUnstated(CounterContainer, AmounterContainer) as [CounterContainer, AmounterContainer];
+  const [counter, amounter] = useUnstated(CounterContainer, AmounterContainer);
   return (
     <div>
       <span>{counter.state.count}</span>
@@ -77,7 +93,7 @@ function CounterWithAmountUsingHook() {
 function CounterWithAmountApp() {
   return (
     <Subscribe to={[AmounterContainer]}>
-      {(amounter: AmounterContainer) => (
+      {(amounter) => (
         <div>
           <Counter />
           <input
@@ -94,7 +110,7 @@ function CounterWithAmountApp() {
 }
 
 function CounterWithAmountAppUsingHook() {
-  const [amounter] = useUnstated(AmounterContainer) as [AmounterContainer];
+  const [amounter] = useUnstated(AmounterContainer);
 
   return (
     <div>
@@ -116,7 +132,7 @@ const sharedAmountContainer = new AmounterContainer();
 function CounterWithSharedAmountApp() {
   return (
     <Subscribe to={[sharedAmountContainer]}>
-      {(amounter: AmounterContainer) => (
+      {(amounter) => (
         <div>
           <Counter />
           <input
@@ -132,7 +148,7 @@ function CounterWithSharedAmountApp() {
   );
 }
 function CounterWithSharedAmountAppUsingHook() {
-  const [amounter] = useUnstated(sharedAmountContainer) as [AmounterContainer];
+  const [amounter] = useUnstated(sharedAmountContainer);
   return (
     <div>
       <Counter />

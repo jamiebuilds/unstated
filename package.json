@@ -46,7 +46,7 @@
     "react-test-renderer": "next",
     "rollup": "^0.55.3",
     "rollup-plugin-babel": "^3.0.3",
-    "typescript": "^2.7.1"
+    "typescript": "^3.1.0"
   },
   "lint-staged": {
     "*.{js,json,md}": ["prettier --write", "git add"]
