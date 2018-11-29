@@ -1,10 +1,10 @@
 // @flow
 import React, { type Node } from 'react';
-import createReactContext from 'create-react-context';
+import createReactContext, { type Context } from 'create-react-context';
 
 type Listener = () => mixed;
 
-const StateContext = createReactContext(null);
+const StateContext: Context<ContainerMapType | null> = createReactContext(null);
 
 export class Container<State: {}> {
   state: State;

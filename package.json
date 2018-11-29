@@ -35,7 +35,7 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
-    "flow-bin": "^0.64.0",
+    "flow-bin": "^0.87.0",
     "flow-copy-source": "^1.2.2",
     "husky": "^0.14.3",
     "jest": "^22.1.4",
