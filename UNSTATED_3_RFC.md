@@ -14,8 +14,8 @@ import { Provider, useProvided, useInject } from 'unstated';
 function useCounter(initialCount = 0) {
   let [count, setCount] = useState(initialCount);
   let reset = () => setCount(0);
-  let increment = () => setCount(count => count - amount);
-  let decrement = () => setCount(count => count + amount);
+  let increment = () => setCount(count => count + amount);
+  let decrement = () => setCount(count => count - amount);
   return { count, reset, increment, decrement };
 }
 
@@ -53,8 +53,8 @@ import { useState } from 'react';
 function useCounter(initialCount = 0) {
   let [count, setCount] = useState(initialCount);
   let reset = () => setCount(0);
-  let increment = () => setCount(count => count - amount);
-  let decrement = () => setCount(count => count + amount);
+  let increment = () => setCount(count => count + amount);
+  let decrement = () => setCount(count => count - amount);
   return { count, reset, increment, decrement };
 }
 ```
