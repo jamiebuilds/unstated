@@ -358,7 +358,7 @@ If we want to test the relationship between our container and the component
 we can again construct our own instance and inject it into the tree.
 
 ```js
-test('counter', () => {
+test('counter', async () => {
   let counter = new CounterContainer();
   let tree = render(
     <Provider inject={[counter]}>
@@ -378,7 +378,7 @@ Dependency injection is useful in many ways. Like if we wanted to stub out a
 method in our state container we can do that painlessly.
 
 ```js
-test('counter', () => {
+test('counter', async () => {
   let counter = new CounterContainer();
   let inc = stub(counter, 'increment');
   let dec = stub(counter, 'decrement');
