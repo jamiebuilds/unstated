@@ -8,6 +8,8 @@
 
 > State so simple, it goes without saying
 
+[中文](./docs/zh-cn.md)
+
 ## Installation
 
 ```sh
