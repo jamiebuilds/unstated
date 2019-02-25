@@ -516,4 +516,5 @@ render(
 ## Related
 
 - [unstated-debug](https://github.com/sindresorhus/unstated-debug) - Debug your Unstated containers with ease
+- [unstated-props](https://github.com/mac-r/unstated-props) - Access your Unstated containers from component props
  
