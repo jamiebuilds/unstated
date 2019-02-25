@@ -2,7 +2,7 @@
   <br><br><br><br><br>
   <img src="https://raw.githubusercontent.com/shadowwalker/unstated/typescript/img/logo.png" alt="Unstated Logo" width="400"/>
   <br>
-  <h2>Rewritten in Typescript</h2>
+  <h2 style="border-bottom: none;">Rewritten in Typescript</h2>
   <br><br><br><br><br>
 </div>
 
