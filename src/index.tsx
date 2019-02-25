@@ -184,9 +184,12 @@ export const unstated = <
               let injectProps = {}
               if (mapStateToProps === undefined) {
                 containers.forEach(c => {
+                  let container = c.constructor.name
+                  container = container.charAt(0).toLowerCase() + container.slice(1)
+
                   injectProps = {
                     ...injectProps,
-                    ...c
+                    [container]: c
                   }
                 })
               } else {

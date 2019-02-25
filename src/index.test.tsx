@@ -250,3 +250,37 @@ test('unstated HOC: increase/decrease count', async () => {
   expect(parseInt(tree.children[0].children[0])).toBe(INITIAL)
   expect(counterContainer.state.count).toBe(INITIAL)
 })
+
+test('unstated HOC without map to props: increase/decrease count', async () => {
+  const counterContainer = new CounterContainer()
+
+  const Counter = ({ counterContainer }: { counterContainer: CounterContainer }) => (
+    <div>
+      <span>{counterContainer.state.count}</span>
+      <button onClick={() => counterContainer.decrement()}>-</button>
+      <button onClick={() => counterContainer.increment()}>+</button>
+    </div>
+  )
+
+  const UnstatedCounter = unstated(CounterContainer)(Counter)
+
+  const component = renderer.create(
+    <Provider inject={[counterContainer]}>
+      <UnstatedCounter />
+    </Provider>
+  )
+
+  let tree = component.toJSON()
+  expect(parseInt(tree.children[0].children[0])).toBe(INITIAL)
+  expect(counterContainer.state.count).toBe(INITIAL)
+
+  await tree.children[1].props.onClick()  // decrease
+  tree = component.toJSON()
+  expect(parseInt(tree.children[0].children[0])).toBe(INITIAL - 1)
+  expect(counterContainer.state.count).toBe(INITIAL - 1)
+
+  await tree.children[2].props.onClick()  // increase
+  tree = component.toJSON()
+  expect(parseInt(tree.children[0].children[0])).toBe(INITIAL)
+  expect(counterContainer.state.count).toBe(INITIAL)
+})
