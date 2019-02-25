@@ -2,6 +2,7 @@
 /src/
 /img/
 tsconfig.json
+jest.config.js
 package-lock.json
 yarn.lock
 yarn-error.log

@@ -34,7 +34,7 @@
 ### unstated HOC
 
 ``` typescript
-import unstated from 'unstated'
+import unstated from 'unstated-typescript'
 ```
 
 `unstated` is a HOC that works like `connect` in `react-redux`, it makes things simple to work with dummy component.
@@ -104,7 +104,7 @@ yarn add unstated-typescript
 ```jsx
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider, Subscribe, Container } from 'unstated';
+import { Provider, Subscribe, Container } from 'unstated-typescript';
 
 type CounterState = {
   count: number
