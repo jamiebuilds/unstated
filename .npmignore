@@ -1,7 +1,6 @@
 /node_modules/
 /src/
 /img/
-/test/
 tsconfig.json
 package-lock.json
 yarn.lock

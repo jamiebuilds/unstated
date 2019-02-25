@@ -60,14 +60,21 @@ type MapContainersType<TContainers extends ContainersType> = {
     TContainers[K] extends Container<object> ? TContainers[K] : any
 }
 
-export interface ISubscribeProps {
-  to: ContainersType
-  children(...instances: MapContainersType<ContainersType>): React.ReactNode
+type Containers<
+  TContainers extends ContainerType<object> | ContainersType
+> = TContainers extends ContainerClass<object, infer C> ? [C] : 
+    TContainers extends Container<object> ? [TContainers] :
+    TContainers extends ContainersType ? MapContainersType<TContainers> :
+    any[]
+
+export interface ISubscribeProps<TContainers extends ContainersType> {
+  to: TContainers
+  children: (...instances: Containers<TContainers>) => React.ReactNode
 }
 
-const Context = React.createContext(null)  // type ContainersMap
+const Context = React.createContext<ContainersMap>(null)  // type ContainersMap
 
-export class Subscribe extends React.Component<ISubscribeProps> {
+export class Subscribe<TContainers extends ContainersType> extends React.Component<ISubscribeProps<TContainers>> {
   state = {}
   _instances = []
   _unmounted = false
@@ -79,9 +86,9 @@ export class Subscribe extends React.Component<ISubscribeProps> {
   }
 
   _createInstances(
-    ctx: ContainersMap | null,
-    containers: ContainersType
-  ): MapContainersType<ContainersType> {
+    ctx: ContainersMap,
+    containers: TContainers
+  ) {
     this._unsubscribe()
 
     if (!ctx) {
@@ -96,18 +103,17 @@ export class Subscribe extends React.Component<ISubscribeProps> {
         instance = item
       } else {
         instance = ctx.get(item)
-
         if (!instance) {
           instance = new item()
-          instance.subscribe(this.onUpdate)
           ctx.set(item, instance)
         }
+        instance.subscribe(this.onUpdate)
       }
 
       return instance
     })
 
-    return this._instances as MapContainersType<ContainersType>
+    return this._instances as Containers<TContainers>
   }
 
   componentWillUnmount() {
@@ -129,7 +135,7 @@ export class Subscribe extends React.Component<ISubscribeProps> {
     const { to, children } = this.props
     return (
       <Context.Consumer>
-        {(ctx: ContainersMap) => children.apply(null, this._createInstances(ctx, to))}
+        {ctx => children.apply(null, this._createInstances(ctx, to))}
       </Context.Consumer>
     )
   }
@@ -148,7 +154,7 @@ export const Provider = ({inject, children}: IProviderProps) => {
   
         if (inject) {
           inject.forEach(instance => {
-            map.set(instance.constructor, instance)
+            map.set(instance.constructor as any, instance)
           })
         }
   
@@ -164,12 +170,7 @@ export const Provider = ({inject, children}: IProviderProps) => {
 
 type IMapStateToProps<
   TContainers extends ContainerType<object> | ContainersType
-> = (...containers: 
-  TContainers extends ContainerClass<object, infer C> ? [C] : 
-  TContainers extends Container<object> ? [TContainers] :
-  TContainers extends ContainersType ? MapContainersType<TContainers> :
-  any[]
-) => object
+> = (...containers: Containers<TContainers>) => object
 
 export const unstated = <
   TContainers extends ContainerType<object> | ContainersType

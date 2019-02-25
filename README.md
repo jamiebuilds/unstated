@@ -1,23 +1,31 @@
 <div align="center">
   <br><br><br><br><br>
-  <img src="https://raw.githubusercontent.com/thejameskyle/unstated/master/logo.png" alt="Unstated Logo" width="400">
-  <br><br><br><br><br><br><br><br>
+  <img src="https://raw.githubusercontent.com/shadowwalker/unstated/typescript/img/logo.png" alt="Unstated Logo" width="400"/>
+  <br>
+  <h2>Rewritten in Typescript</h2>
+  <br><br><br><br><br>
 </div>
+
 
 # Unstated
 
+[Original Unstated](https://github.com/jamiebuilds/unstated) by [jamiebuilds](https://github.com/jamiebuilds)
+
 > State so simple, it goes without saying
+
+## Highlight typescript feature
+
+
 
 ## Installation
 
 ```sh
-yarn add unstated
+yarn add unstated-typescript
 ```
 
 ## Example
 
 ```jsx
-// @flow
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider, Subscribe, Container } from 'unstated';

@@ -9,12 +9,16 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.6",
     "@types/react": "^16.8.3",
     "jest": "^24.1.0",
     "react": "^16.8.2",
+    "react-test-renderer": "^16.8.3",
+    "ts-jest": "^24.0.0",
     "typescript": "^3.3.3"
   },
   "dependencies": {
