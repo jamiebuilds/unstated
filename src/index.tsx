@@ -12,12 +12,12 @@ export class Container<S extends object> {
   }
 
   setState(
-    updater: S | ((prevState: S) => S),
+    updater: S | ((prevState: S) => object),
     callback?: (state?: S) => void
   ): Promise<void> {
     let nextState: S
     if (typeof updater === 'function') {
-      nextState = (updater as (prevState: S) => S)(this.state)
+      nextState = (updater as (prevState: S) => object)(this.state) as S
     } else {
       nextState = updater
     }
