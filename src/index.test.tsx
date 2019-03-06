@@ -251,7 +251,7 @@ test('unstated HOC: increase/decrease count', async () => {
   expect(counterContainer.state.count).toBe(INITIAL)
 })
 
-test('unstated HOC without map to props: increase/decrease count', async () => {
+test('unstated HOC: without map to props: increase/decrease count', async () => {
   const counterContainer = new CounterContainer()
 
   const Counter = ({ counterContainer }: { counterContainer: CounterContainer }) => (
