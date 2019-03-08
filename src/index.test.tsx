@@ -284,3 +284,19 @@ test('unstated HOC: without map to props: increase/decrease count', async () => 
   expect(parseInt(tree.children[0].children[0])).toBe(INITIAL)
   expect(counterContainer.state.count).toBe(INITIAL)
 })
+
+test('unstated HOC: copy static methods', async () => {
+  const Counter = ({ counterContainer }: { counterContainer: CounterContainer }) => (
+    <div>
+      <span>{counterContainer.state.count}</span>
+      <button onClick={() => counterContainer.decrement()}>-</button>
+      <button onClick={() => counterContainer.increment()}>+</button>
+    </div>
+  )
+
+  Counter.staticMethod = () => 9876
+
+  const UnstatedCounter = unstated(CounterContainer)(Counter)
+
+  expect((UnstatedCounter as any).staticMethod()).toBe(9876)
+})
