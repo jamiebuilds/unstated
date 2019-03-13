@@ -1,17 +1,14 @@
 <div align="center">
-  <br><br><br><br><br>
+  <br><br><br><br>
   <img src="https://raw.githubusercontent.com/shadowwalker/unstated/typescript/img/logo.png" alt="Unstated Logo" width="400"/>
   <br>
   <h2 style="border-bottom: none;">Rewritten in Typescript</h2>
-  <br><br><br><br><br>
+  <br><br><br><br>
 </div>
-
 
 # Unstated
 
-[Original Unstated](https://github.com/jamiebuilds/unstated) by [jamiebuilds](https://github.com/jamiebuilds)
-
-> State so simple, it goes without saying
+> State so simple, it goes without saying. Now with typescript support.
 
 ## Highlight Typescript Support
 
@@ -34,7 +31,7 @@
 ### unstated HOC
 
 ``` typescript
-import unstated from 'unstated-typescript'
+import unstated from 'unstated'
 ```
 
 `unstated` is a HOC that works like `connect` in `react-redux`, it makes things simple to work with dummy component.
@@ -89,14 +86,7 @@ const UnstatedComponent = unstated([C1,C2], (c1,c2) => ({
 ## Installation
 
 ```sh
-yarn add unstated-typescript
-```
-
-**Switch from original unstated needs zero code change**
-
-``` sh
-yarn remove unstated
-yarn add unstated-typescript
+yarn add unstated
 ```
 
 ## Example
@@ -104,7 +94,7 @@ yarn add unstated-typescript
 ```jsx
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider, Subscribe, Container } from 'unstated-typescript';
+import { Provider, Subscribe, Container } from 'unstated';
 
 type CounterState = {
   count: number

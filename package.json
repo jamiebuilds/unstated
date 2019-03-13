@@ -1,13 +1,15 @@
 {
-  "name": "unstated-typescript",
-  "version": "2.1.5",
-  "description": "State so simple, it goes without saying. Unstated with typescript support.",
+  "name": "unstated",
+  "version": "2.2.0-alpha.0",
+  "description": "State so simple, it goes without saying. Now with typescript support.",
   "main": "index.js",
   "types": "index.d.ts",
-  "repository": "https://github.com/shadowwalker/unstated",
-  "author": "Wei Wang <weiwio@outlook.com>",
+  "repository": "https://github.com/thejameskyle/unstated",
+  "author": "James Kyle <me@thejameskyle.com>",
+  "contributors": [
+    "Wei Wang <weiwio@outlook.com>"
+  ],
   "license": "MIT",
-  "private": false,
   "scripts": {
     "build": "tsc",
     "test": "jest"
