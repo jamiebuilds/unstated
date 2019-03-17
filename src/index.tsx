@@ -12,7 +12,7 @@ export class Container<S extends object> {
   }
 
   setState(
-    updater: Partial<S> | ((prevState: S) => Partial<S>),
+    updater?: Partial<S> | ((prevState: S) => Partial<S>),
     callback?: (state?: S) => void
   ): Promise<void> {
     let nextState: Partial<S>
@@ -22,11 +22,14 @@ export class Container<S extends object> {
       nextState = updater
     }
 
-    if (!nextState || nextState === this.state) {
+    if (nextState === null) {
+      if (callback) callback(this.state)
       return Promise.resolve()
     }
 
-    this.state = {...this.state, ...nextState}
+    if (nextState && nextState !== this.state) {
+      this.state = {...this.state, ...nextState}
+    }
     
     let promises = this._listeners.map(listener => listener())
     return Promise.all(promises).then(() => {
