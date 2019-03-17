@@ -1,6 +1,6 @@
 {
   "name": "unstated-typescript",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "State so simple, it goes without saying. Unstated with typescript support.",
   "main": "index.js",
   "types": "index.d.ts",
