@@ -4,12 +4,12 @@ import unstated, { Provider, Subscribe, Container } from '../index'
 
 const INITIAL = 1234
 
-interface ICounterContainer {
+interface CounterState {
   count: number
 }
 
-class CounterContainer extends Container<ICounterContainer> {
-  state: ICounterContainer = { count: INITIAL }
+class CounterContainer extends Container<CounterState> {
+  state: CounterState = { count: INITIAL }
   increment = (amount = 1) => {
     this.setState({ count: this.state.count + amount })
   }
@@ -18,12 +18,12 @@ class CounterContainer extends Container<ICounterContainer> {
   }
 }
 
-interface IAmounterContainer {
+interface AmounterState {
   amount: number
 }
 
-class AmounterContainer extends Container<IAmounterContainer> {
-  state: IAmounterContainer = { amount: INITIAL }
+class AmounterContainer extends Container<AmounterState> {
+  state: AmounterState = { amount: INITIAL }
   setAmount(amount: number) {
     this.setState({ amount })
   }
@@ -299,4 +299,63 @@ test('unstated HOC: copy static methods', async () => {
   const UnstatedCounter = unstated(CounterContainer)(Counter)
 
   expect((UnstatedCounter as any).staticMethod()).toBe(9876)
+})
+
+class DummyContainer extends Container<{}> {
+  setStateWithNull() {
+    this.setState(null)
+  }
+
+  setStateWithUpdaterReturnNull() {
+    this.setState(state => null)
+  }
+
+  setStateWithUndefined() {
+    this.setState()
+  }
+
+  setStateWithEmptyOjbect() {
+    this.setState({})
+  }
+}
+
+test('enforce re-render unless bail out with null', async () => {
+  let renderCount = 0
+
+  const component = renderer.create(
+    <Provider>
+      <Subscribe to={[DummyContainer]}>
+        {dummy => {
+          renderCount += 1
+
+          return (
+            <div>
+              <button onClick={() => dummy.setStateWithNull()}>Set state with null</button>
+              <button onClick={() => dummy.setStateWithUpdaterReturnNull()}>Set state with updater return null</button>
+              <button onClick={() => dummy.setStateWithUndefined()}>Set state with undefined</button>
+              <button onClick={() => dummy.setStateWithEmptyOjbect()}>Set state with empty object</button>
+            </div>
+          )
+        }}
+      </Subscribe>
+    </Provider>
+  )
+
+  expect(renderCount).toBe(1)  // first render
+
+  let tree = component.toJSON()
+  await tree.children[0].props.onClick()  // should bail out re-render
+  expect(renderCount).toBe(1)
+
+  tree = component.toJSON()
+  await tree.children[1].props.onClick()  // should bail out re-render
+  expect(renderCount).toBe(1)
+
+  tree = component.toJSON()
+  await tree.children[2].props.onClick()  // should re-render on falsy value except null
+  expect(renderCount).toBe(2)
+
+  tree = component.toJSON()
+  await tree.children[3].props.onClick()  // should re-render on falsy value except null
+  expect(renderCount).toBe(3)
 })
