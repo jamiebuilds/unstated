@@ -4,12 +4,12 @@ import unstated, { Provider, Subscribe, Container } from '../index'
 
 const INITIAL = 1234
 
-interface ICounterContainer {
+interface CounterState {
   count: number
 }
 
-class CounterContainer extends Container<ICounterContainer> {
-  state: ICounterContainer = { count: INITIAL }
+class CounterContainer extends Container<CounterState> {
+  state: CounterState = { count: INITIAL }
   increment = (amount = 1) => {
     this.setState({ count: this.state.count + amount })
   }
@@ -18,12 +18,12 @@ class CounterContainer extends Container<ICounterContainer> {
   }
 }
 
-interface IAmounterContainer {
+interface AmounterState {
   amount: number
 }
 
-class AmounterContainer extends Container<IAmounterContainer> {
-  state: IAmounterContainer = { amount: INITIAL }
+class AmounterContainer extends Container<AmounterState> {
+  state: AmounterState = { amount: INITIAL }
   setAmount(amount: number) {
     this.setState({ amount })
   }
