@@ -8,6 +8,8 @@
 
 > State so simple, it goes without saying
 
+### :wave: [Check out the *-next version of Unstated with an all new React Hooks API &rarr;](https://github.com/jamiebuilds/unstated-next)
+
 ## Installation
 
 ```sh
