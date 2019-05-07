@@ -1,57 +1,29 @@
 {
   "name": "unstated",
-  "version": "2.1.1",
-  "description": "State so simple, it goes without saying",
-  "main": "lib/unstated.js",
-  "module": "lib/unstated.es.js",
-  "types": "lib/unstated.d.ts",
+  "version": "2.2.0-alpha.0",
+  "description": "State so simple, it goes without saying. Now with typescript support.",
+  "main": "index.js",
+  "types": "index.d.ts",
   "repository": "https://github.com/thejameskyle/unstated",
   "author": "James Kyle <me@thejameskyle.com>",
+  "contributors": [
+    "Wei Wang <weiwio@outlook.com>"
+  ],
   "license": "MIT",
-  "files": ["lib"],
   "scripts": {
-    "clean": "rm -rf lib",
-    "build":
-      "rollup -c && flow-copy-source src lib && cp src/unstated.d.ts lib/unstated.d.ts",
-    "typecheck": "flow",
-    "test": "jest",
-    "format": "prettier --write **/*.{js,json,md}",
-    "prepublish": "yarn clean && yarn build",
-    "precommit": "lint-staged",
-    "example": "parcel example/index.html",
-    "typescript": "tsc -p tsconfig.json"
-  },
-  "dependencies": {
-    "create-react-context": "^0.2.2"
-  },
-  "peerDependencies": {
-    "react": "^15.0.0 || ^16.0.0"
+    "build": "tsc",
+    "test": "jest"
   },
   "devDependencies": {
-    "@types/react": "^16.0.36",
-    "babel-core": "^6.26.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-flow": "^6.23.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0",
-    "flow-bin": "^0.64.0",
-    "flow-copy-source": "^1.2.2",
-    "husky": "^0.14.3",
-    "jest": "^22.1.4",
-    "jsdom": "^11.6.2",
-    "lint-staged": "^6.1.0",
-    "parcel-bundler": "^1.5.1",
-    "prettier": "^1.10.2",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-test-renderer": "^16.2.0",
-    "rollup": "^0.55.3",
-    "rollup-plugin-babel": "^3.0.3",
-    "typescript": "^2.7.1"
+    "@types/jest": "^24.0.11",
+    "@types/react": "^16.8.8",
+    "jest": "^24.5.0",
+    "react": "^16.8.4",
+    "react-test-renderer": "^16.8.4",
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.3.3"
   },
-  "lint-staged": {
-    "*.{js,json,md}": ["prettier --write", "git add"]
+  "dependencies": {
+    "hoist-non-react-statics": "^3.3.0"
   }
 }

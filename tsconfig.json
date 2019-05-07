@@ -1,14 +1,20 @@
 {
   "compilerOptions": {
+    "outDir": ".",
     "module": "commonjs",
     "target": "es5",
-    "lib": ["es6", "dom"],
-    "sourceMap": true,
+    "lib": [ "esnext", "dom" ],
     "jsx": "react",
     "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noEmit": true
+    "declaration": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "removeComments": true
   },
-  "include": ["src/**/*", "__test__/*.tsx"]
+  "files": [
+    "src/index.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -1,6 +1,4 @@
-node_modules
-*.log
-lib
-.cache
-dist
-coverage
+node_modules/
+/*.js
+/*.d.ts
+yarn-error.log

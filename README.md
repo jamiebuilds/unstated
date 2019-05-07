@@ -1,28 +1,183 @@
 <div align="center">
-  <br><br><br><br><br>
-  <img src="https://raw.githubusercontent.com/thejameskyle/unstated/master/logo.png" alt="Unstated Logo" width="400">
-  <br><br><br><br><br><br><br><br>
+  <br><br><br><br>
+  <img src="https://raw.githubusercontent.com/shadowwalker/unstated/typescript/img/logo.png" alt="Unstated Logo" width="400"/>
+  <br>
+  <h2 style="border-bottom: none;">Rewritten in Typescript</h2>
+  <br><br><br><br>
 </div>
+
 
 # Unstated
 
-> State so simple, it goes without saying
+> State so simple, it goes without saying. Now with typescript support.
+
+## Highlight Typescript Support
+
+### Typecheck Errors
+
+![](https://github.com/shadowwalker/unstated/blob/typescript/img/typecheck-error-empty-container-generic.png?raw=true)
+
+![](https://github.com/shadowwalker/unstated/blob/typescript/img/typecheck-error-empty-inject.png?raw=true)
+
+![](https://github.com/shadowwalker/unstated/blob/typescript/img/typecheck-error-empty-to.png?raw=true)
+
+### Type Inference
+
+![](https://github.com/shadowwalker/unstated/blob/typescript/img/typecheck-infer-subscribe-children.png?raw=true)
+
+![](https://github.com/shadowwalker/unstated/blob/typescript/img/typecheck-infer-unstated.png?raw=true)
+
+## New Feature
+
+### unstated HOC
+
+``` typescript
+import unstated from 'unstated'
+```
+
+`unstated` is a HOC that works like `connect` in `react-redux`, it makes things simple to work with dummy component.
+
+``` typescript
+interface ICounterProps {
+  count: number
+  decrement: () => void
+  increment: () => void
+}
+
+const Counter = ({count, decrement, increment}: ICounterProps) => (
+  <div>
+    <span>{count}</span>
+    <button onClick={() => decrement()}>-</button>
+    <button onClick={() => increment()}>+</button>
+  </div>
+)
+
+const UnstatedCounter = unstated(CounterContainer, 
+  counter => ({
+    count: counter.state.count,
+    decrement: counter.decrement,
+    increment: counter.increment
+  })
+)(Counter)
+```
+
+`unstated` takes two arguments, the first is a single or an array of container class or container, the second is an optional map to props function.
+
+``` typescript
+// without map to props function
+// container instance could be accessed as first letter lower cased key in props
+const UnstatedComponent = unstated(Container)(Component)
+const Component = ({ container }) => (... ...)
+
+// with map to props
+const UnstatedComponent = unstated(Container, container => ({
+  fooProp = container.state.fooState,
+  barFuncProp = container.barFunc
+}))(Component)
+
+// multiple containers
+const UnstatedComponent = unstated([C1,C2], (c1,c2) => ({
+  foo1 = c1.state.fooState,
+  barFuncProp2 = c1.barFunc,
+  fooProp2 = c2.state.fooState,
+  barFuncProp2 = c2.barFunc
+}))(Component)
+```
+
+## Highlight Typescript Support
+
+### Typecheck Errors
+
+![](https://github.com/shadowwalker/unstated/blob/typescript/img/typecheck-error-empty-container-generic.png?raw=true)
+
+![](https://github.com/shadowwalker/unstated/blob/typescript/img/typecheck-error-empty-inject.png?raw=true)
+
+![](https://github.com/shadowwalker/unstated/blob/typescript/img/typecheck-error-empty-to.png?raw=true)
+
+### Type Inference
+
+![](https://github.com/shadowwalker/unstated/blob/typescript/img/typecheck-infer-subscribe-children.png?raw=true)
+
+![](https://github.com/shadowwalker/unstated/blob/typescript/img/typecheck-infer-unstated.png?raw=true)
+
+## New Feature
+
+### unstated HOC
+
+``` typescript
+import unstated from 'unstated-typescript'
+```
+
+`unstated` is a HOC that works like `connect` in `react-redux`, it makes things simple to work with dummy component.
+
+``` typescript
+interface ICounterProps {
+  count: number
+  decrement: () => void
+  increment: () => void
+}
+
+const Counter = ({count, decrement, increment}: ICounterProps) => (
+  <div>
+    <span>{count}</span>
+    <button onClick={() => decrement()}>-</button>
+    <button onClick={() => increment()}>+</button>
+  </div>
+)
+
+const UnstatedCounter = unstated(CounterContainer, 
+  counter => ({
+    count: counter.state.count,
+    decrement: counter.decrement,
+    increment: counter.increment
+  })
+)(Counter)
+```
+
+`unstated` takes two arguments, the first is a single or an array of container class or container, the second is an optional map to props function.
+
+``` typescript
+// without map to props function
+// container instance could be accessed as first letter lower cased key in props
+const UnstatedComponent = unstated(Container)(Component)
+const Component = ({ container }) => (... ...)
+
+// with map to props
+const UnstatedComponent = unstated(Container, container => ({
+  fooProp = container.state.fooState,
+  barFuncProp = container.barFunc
+}))(Component)
+
+// multiple containers
+const UnstatedComponent = unstated([C1,C2], (c1,c2) => ({
+  foo1 = c1.state.fooState,
+  barFuncProp2 = c1.barFunc,
+  fooProp2 = c2.state.fooState,
+  barFuncProp2 = c2.barFunc
+}))(Component)
+```
 
 ### :wave: [Check out the *-next version of Unstated with an all new React Hooks API &rarr;](https://github.com/jamiebuilds/unstated-next)
 
 ## Installation
 
 ```sh
-yarn add unstated
+yarn add unstated-typescript
+```
+
+**Switch from original unstated needs zero code change**
+
+``` sh
+yarn remove unstated
+yarn add unstated-typescript
 ```
 
 ## Example
 
 ```jsx
-// @flow
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider, Subscribe, Container } from 'unstated';
+import { Provider, Subscribe, Container } from 'unstated-typescript';
 
 type CounterState = {
   count: number
@@ -518,4 +673,4 @@ render(
 ## Related
 
 - [unstated-debug](https://github.com/sindresorhus/unstated-debug) - Debug your Unstated containers with ease
- 
+
