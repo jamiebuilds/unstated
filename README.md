@@ -16,6 +16,8 @@
 yarn add unstated
 ```
 
+> `Promise` and `Object.assign` are used, Polyfills should be added if necessary
+
 ## Example
 
 ```jsx
