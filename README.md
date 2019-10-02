@@ -8,7 +8,7 @@
 
 > State so simple, it goes without saying
 
-### :wave: [Check out the *-next version of Unstated with an all new React Hooks API &rarr;](https://github.com/jamiebuilds/unstated-next)
+### :wave: [Check out the \*-next version of Unstated with an all new React Hooks API &rarr;](https://github.com/jamiebuilds/unstated-next)
 
 ## Installation
 
@@ -130,8 +130,12 @@ const Amount = React.createContext(1);
 
 class Counter extends React.Component {
   state = { count: 0 };
-  increment = amount => { this.setState({ count: this.state.count + amount }); };
-  decrement = amount => { this.setState({ count: this.state.count - amount }); };
+  increment = amount => {
+    this.setState({ count: this.state.count + amount });
+  };
+  decrement = amount => {
+    this.setState({ count: this.state.count - amount });
+  };
   render() {
     return (
       <Amount.Consumer>
@@ -158,8 +162,12 @@ class AmountAdjuster extends React.Component {
     return (
       <Amount.Provider value={this.state.amount}>
         <div>
-          {this.props.children}
-          <input type="number" value={this.state.amount} onChange={this.handleChange}/>
+          {this.props.children ? this.props.children : null}
+          <input
+            type="number"
+            value={this.state.amount}
+            onChange={this.handleChange}
+          />
         </div>
       </Amount.Provider>
     );
@@ -168,7 +176,7 @@ class AmountAdjuster extends React.Component {
 
 render(
   <AmountAdjuster>
-    <Counter/>
+    <Counter />
   </AmountAdjuster>
 );
 ```
@@ -282,9 +290,9 @@ something that works in every browser.
 
 Next we'll need a piece to introduce our state back into the tree so that:
 
-* When state changes, our components re-render.
-* We can depend on our container's state.
-* We can call methods on our container.
+- When state changes, our components re-render.
+- We can depend on our container's state.
+- We can call methods on our container.
 
 For this we have the `<Subscribe>` component which allows us to pass our
 container classes/instances and receive instances of them in the tree.
@@ -518,4 +526,3 @@ render(
 ## Related
 
 - [unstated-debug](https://github.com/sindresorhus/unstated-debug) - Debug your Unstated containers with ease
- 
