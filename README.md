@@ -66,7 +66,7 @@ render(
 
 For more examples, see the `example/` directory.
 
-## Happy Customers
+### Happy Customers
 
 <h4 align="center">
   "Unstated is a breath of fresh air for state management. I rewrote my whole app to use it yesterday."
